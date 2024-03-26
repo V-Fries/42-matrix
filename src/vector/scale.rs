@@ -36,21 +36,6 @@ impl<K: for<'a> MulAssign<&'a K>, const N: usize> Mul<K> for Vector<K, N> {
     }
 }
 
-// // Vector<K> * &Vector<K> (Dot product)
-// impl<K: Clone + AddAssign + for<'a> Mul<&'a K, Output=K> + Default + AddAssign, const N: usize>
-// Mul<&Self> for Vector<K, N> {
-//     type Output = K;
-//
-//     fn mul(self, other: &Self) -> Self::Output {
-//         assert_eq!(self.size(), other.size());
-//
-//         let mut result: K = Default::default();
-//         for i in 0..N {
-//             result += self[i].clone() * &other[i];
-//         }
-//         result
-//     }
-// }
 
 #[cfg(test)]
 mod test {
@@ -91,13 +76,4 @@ mod test {
         assert_eq!(v[1] * k, result[1]);
         assert_eq!(v[2] * k, result[2]);
     }
-
-    // // Vector<K> * &Vector<K>
-    // #[test]
-    // fn dot_product() {
-    //     let v1 = Vector::new([34., 2., 4.]);
-    //     let v2 = Vector::new([3., 23., 24.]);
-    //     let expected_result = v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
-    //     assert_eq!(expected_result, v1 * &v2);
-    // }
 }

@@ -24,8 +24,8 @@ impl<K: Default + Clone + for<'a> MulAssign<&'a K> + for<'a> AddAssign<&'a K>, c
     ) -> Vector<K, N> {
         let mut result = Vector::<K, N>::default();
 
-        for (v, k) in vectors.into_iter().zip(coefs.iter()) {
-            result += v * k;
+        for (vector, scalar) in vectors.into_iter().zip(coefs.iter()) {
+            result += vector * scalar;
         }
         result
     }
