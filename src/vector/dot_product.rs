@@ -2,8 +2,9 @@ use std::ops::{AddAssign, Mul};
 use crate::vector::Vector;
 
 // &Vector<K> * &Vector<K> (Dot product)
-impl<K: Clone + AddAssign + for<'a> Mul<&'a K, Output=K> + Default,
-    const N: usize> Mul<&Vector<K, N>> for &Vector<K, N> {
+impl<K, const N: usize> Mul<&Vector<K, N>> for &Vector<K, N>
+    where
+        K: Clone + AddAssign + for<'a> Mul<&'a K, Output=K> + Default {
     type Output = K;
 
     fn mul(self, other: &Vector<K, N>) -> Self::Output {
@@ -16,24 +17,27 @@ impl<K: Clone + AddAssign + for<'a> Mul<&'a K, Output=K> + Default,
 }
 
 // &Vector<K> * Vector<K> (Dot product)
-impl<K: Clone + AddAssign + for<'a> Mul<&'a K, Output=K> + Default,
-    const N: usize> Mul<Vector<K, N>> for &Vector<K, N> {
+impl<K, const N: usize> Mul<Vector<K, N>> for &Vector<K, N>
+    where
+        K: Clone + AddAssign + for<'a> Mul<&'a K, Output=K> + Default {
     type Output = K;
 
     fn mul(self, other: Vector<K, N>) -> Self::Output { self * &other }
 }
 
 // Vector<K> * &Vector<K> (Dot product)
-impl<K: Clone + AddAssign + for<'a> Mul<&'a K, Output=K> + Default,
-    const N: usize> Mul<&Self> for Vector<K, N> {
+impl<K, const N: usize> Mul<&Self> for Vector<K, N>
+    where
+        K: Clone + AddAssign + for<'a> Mul<&'a K, Output=K> + Default {
     type Output = K;
 
     fn mul(self, other: &Self) -> Self::Output { &self * other }
 }
 
 // Vector<K> * Vector<K> (Dot product)
-impl<K: Clone + AddAssign + for<'a> Mul<&'a K, Output=K> + Default,
-    const N: usize> Mul<Self> for Vector<K, N> {
+impl<K, const N: usize> Mul<Self> for Vector<K, N>
+    where
+        K: Clone + AddAssign + for<'a> Mul<&'a K, Output=K> + Default {
     type Output = K;
 
     fn mul(self, other: Self) -> Self::Output { &self * &other }

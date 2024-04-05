@@ -16,7 +16,9 @@ impl<K: Default, const N: usize> Vector<K, N> {
     pub fn default() -> Self { Vector::new([(); N].map(|_| Default::default())) }
 }
 
-impl<K: Default + Clone + for<'a> MulAssign<&'a K> + for<'a> AddAssign<&'a K>, const N: usize> Vector<K, N> {
+impl<K, const N: usize> Vector<K, N>
+    where
+        K: Default + Clone + for<'a> MulAssign<&'a K> + for<'a> AddAssign<&'a K> {
     #[allow(dead_code)]
     pub fn linear_combination<const NB_OF_VECTORS: usize>(
         vectors: [Vector<K, N>; NB_OF_VECTORS],

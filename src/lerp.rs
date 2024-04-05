@@ -1,9 +1,9 @@
 use std::ops::{Add, Mul, Sub};
 
 #[allow(dead_code)]
-pub fn lerp<V: Clone + for<'a> Sub<&'a V, Output=V> + Mul<f32, Output=V> + Add<V, Output=V>>(
-    v1: V, v2: V, t: f32,
-) -> V {
+pub fn lerp<V>(v1: V, v2: V, t: f32) -> V
+    where
+        V: Clone + for<'a> Sub<&'a V, Output=V> + Mul<f32, Output=V> + Add<V, Output=V> {
     let direction = v2 - &v1;
     v1 + direction * t
 }

@@ -3,7 +3,9 @@ use std::ops::{Mul, MulAssign};
 use crate::vector::Vector;
 
 // Vector<K> *= &K
-impl<K: for<'a> MulAssign<&'a K>, const N: usize> MulAssign<&K> for Vector<K, N> {
+impl<K, const N: usize> MulAssign<&K> for Vector<K, N>
+    where
+        K: for<'a> MulAssign<&'a K> {
     fn mul_assign(&mut self, other: &K) {
         for i in 0..N {
             self[i] *= other;
@@ -12,7 +14,9 @@ impl<K: for<'a> MulAssign<&'a K>, const N: usize> MulAssign<&K> for Vector<K, N>
 }
 
 // Vector<K> * &K
-impl<K: for<'a> MulAssign<&'a K>, const N: usize> Mul<&K> for Vector<K, N> {
+impl<K, const N: usize> Mul<&K> for Vector<K, N>
+    where
+        K: for<'a> MulAssign<&'a K> {
     type Output = Self;
 
     fn mul(mut self, other: &K) -> Self::Output {
@@ -22,12 +26,16 @@ impl<K: for<'a> MulAssign<&'a K>, const N: usize> Mul<&K> for Vector<K, N> {
 }
 
 // Vector<K> *= K
-impl<K: for<'a> MulAssign<&'a K>, const N: usize> MulAssign<K> for Vector<K, N> {
+impl<K, const N: usize> MulAssign<K> for Vector<K, N>
+    where
+        K: for<'a> MulAssign<&'a K> {
     fn mul_assign(&mut self, other: K) { *self *= &other; }
 }
 
 // Vector<K> * K
-impl<K: for<'a> MulAssign<&'a K>, const N: usize> Mul<K> for Vector<K, N> {
+impl<K, const N: usize> Mul<K> for Vector<K, N>
+    where
+        K: for<'a> MulAssign<&'a K> {
     type Output = Self;
 
     fn mul(mut self, other: K) -> Self::Output {

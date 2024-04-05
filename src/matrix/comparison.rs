@@ -1,6 +1,8 @@
 use crate::matrix::Matrix;
 
-impl<K: PartialEq, const X: usize, const Y: usize> PartialEq for Matrix<K, X, Y> {
+impl<K, const X: usize, const Y: usize> PartialEq for Matrix<K, X, Y>
+    where
+        K: PartialEq {
     fn eq(&self, other: &Self) -> bool { return self.scalars == other.scalars; }
 }
 

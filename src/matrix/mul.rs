@@ -2,7 +2,9 @@ use std::ops::{Mul, MulAssign};
 use crate::matrix::Matrix;
 
 // Matrix<K> *= &K
-impl<K: for<'a> MulAssign<&'a K>, const X: usize, const Y: usize> MulAssign<&K> for Matrix<K, X, Y> {
+impl<K, const X: usize, const Y: usize> MulAssign<&K> for Matrix<K, X, Y>
+    where
+        K: for<'a> MulAssign<&'a K> {
     fn mul_assign(&mut self, scalar: &K) {
         for x in 0..X {
             for y in 0..Y {
@@ -13,7 +15,9 @@ impl<K: for<'a> MulAssign<&'a K>, const X: usize, const Y: usize> MulAssign<&K> 
 }
 
 // Matrix<K> * &K
-impl<K: for<'a> MulAssign<&'a K>, const X: usize, const Y: usize> Mul<&K> for Matrix<K, X, Y> {
+impl<K, const X: usize, const Y: usize> Mul<&K> for Matrix<K, X, Y>
+    where
+        K: for<'a> MulAssign<&'a K> {
     type Output = Matrix<K, X, Y>;
 
     fn mul(mut self, scalar: &K) -> Self::Output {
@@ -23,14 +27,18 @@ impl<K: for<'a> MulAssign<&'a K>, const X: usize, const Y: usize> Mul<&K> for Ma
 }
 
 // Matrix<K> *= K
-impl<K: for<'a> MulAssign<&'a K>, const X: usize, const Y: usize> MulAssign<K> for Matrix<K, X, Y> {
+impl<K, const X: usize, const Y: usize> MulAssign<K> for Matrix<K, X, Y>
+    where
+        K: for<'a> MulAssign<&'a K> {
     fn mul_assign(&mut self, scalar: K) {
         *self *= &scalar;
     }
 }
 
 // Matrix<K> * K
-impl<K: for<'a> MulAssign<&'a K>, const X: usize, const Y: usize> Mul<K> for Matrix<K, X, Y> {
+impl<K, const X: usize, const Y: usize> Mul<K> for Matrix<K, X, Y>
+    where
+        K: for<'a> MulAssign<&'a K> {
     type Output = Matrix<K, X, Y>;
 
     fn mul(mut self, scalar: K) -> Self::Output {

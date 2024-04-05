@@ -1,6 +1,8 @@
 use crate::vector::Vector;
 
-impl<K: PartialEq, const N: usize> PartialEq for Vector<K, N> {
+impl<K, const N: usize> PartialEq for Vector<K, N>
+    where
+        K: PartialEq {
     fn eq(&self, other: &Self) -> bool {
         return self.scalars == other.scalars;
     }
