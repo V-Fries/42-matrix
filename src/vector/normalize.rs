@@ -11,3 +11,14 @@ impl<K, const N: usize> Vector<K, N>
         self / norm
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn norm() {
+        assert_eq!(Vector::new([3., 0.]).normalize(), Vector::new([1., 0.]));
+        assert_eq!(Vector::new([0., 5.]).normalize(), Vector::new([0., 1.]));
+    }
+}
