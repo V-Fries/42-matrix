@@ -14,7 +14,7 @@ macro_rules! assert_approximately_equal {
 #[allow(dead_code)]
 pub fn approximately_equal<K>(a: K, b: &K) -> bool
     where
-        K: Clone + for<'a> Sub<&'a K, Output=K> + Abs + EqEpsilon + PartialOrd {
+        K: for<'a> Sub<&'a K, Output=K> + Abs + EqEpsilon + PartialOrd {
     (a - b).abs() < K::EQ_EPSILON
 }
 
@@ -24,6 +24,6 @@ mod test {
 
     #[test]
     fn test_approximately_equal() {
-        assert!(approximately_equal(0.1 + 0.2, &0.3))
+        assert!(approximately_equal(0.1 + 0.2, &0.3));
     }
 }
