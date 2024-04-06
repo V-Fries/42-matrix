@@ -5,7 +5,7 @@ use crate::eq_epsilon::EqEpsilon;
 #[macro_export]
 macro_rules! assert_approximately_equal {
     ($arg1:expr, $arg2:expr) => {
-        if !approximately_equal($arg1.clone(), &$arg2) {
+        if !crate::approximately_equal::approximately_equal($arg1.clone(), &$arg2) {
             panic!("approximately_equal({}, {}) failed", $arg1, $arg2);
         }
     };

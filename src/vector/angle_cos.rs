@@ -14,7 +14,6 @@ impl<K, const N: usize> Vector<K, N>
 
 #[cfg(test)]
 mod test {
-    use crate::approximately_equal::approximately_equal;
     use crate::assert_approximately_equal;
     use super::*;
 
