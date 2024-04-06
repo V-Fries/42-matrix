@@ -7,7 +7,7 @@ impl<K, const N: usize> Vector<K, N>
     where
         K: Default + Clone + AddAssign + Abs {
     #[allow(dead_code)]
-    fn norm_1(&self) -> K {
+    pub fn norm_1(&self) -> K {
         let mut result: K = Default::default();
         for i in 0..N {
             result += self[i].clone().abs();
@@ -20,7 +20,7 @@ impl<K, const N: usize> Vector<K, N>
     where
         K: Default + Clone + for<'a> Mul<&'a K, Output=K> + AddAssign + Sqrt {
     #[allow(dead_code)]
-    fn norm(&self) -> K {
+    pub fn norm(&self) -> K {
         let mut result: K = Default::default();
         for i in 0..N {
             result += self[i].clone() * &self[i];
@@ -33,7 +33,7 @@ impl<K, const N: usize> Vector<K, N>
     where
         K: Default + Clone + Abs + PartialOrd {
     #[allow(dead_code)]
-    fn norm_inf(&self) -> K {
+    pub fn norm_inf(&self) -> K {
         let mut result: K = Default::default();
         for i in 0..N {
             let tmp = self[i].clone().abs();
