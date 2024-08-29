@@ -1,20 +1,18 @@
-use std::ops::{AddAssign, Mul};
+use std::ops::{Add, Mul};
 
 use super::Matrix;
 
 impl<K, const M: usize, const N: usize, const P: usize> Mul<&Matrix<K, N, P>> for Matrix<K, M, N> 
 where
-    K: Default + for<'a> Mul<&'a K, Output=K> + AddAssign + Clone
+    K: Default + for<'a> Mul<&'a K, Output=K> + Add<Output = K> + Clone
 {
     type Output = Matrix<K, M, P>;
 
     fn mul(self, rhs: &Matrix<K, N, P>) -> Self::Output {
         Self::Output::from_fn(|x| std::array::from_fn(|y| {
-            let mut result = Default::default();
-            for i in 0..N {
-                result += self[x][i].clone() * &rhs[i][y];
-            }
-            result
+            (0..N).fold(Default::default(), |acc, i| {
+                acc + self[x][i].clone() * &rhs[i][y]
+            })
         }))
     }
 }
