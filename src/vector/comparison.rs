@@ -1,4 +1,3 @@
-use std::fmt::Debug;
 use crate::approximately_equal::ApproximatelyEqual;
 use crate::vector::Vector;
 
@@ -12,15 +11,6 @@ impl<K, const N: usize> PartialEq for Vector<K, N>
             }
         }
         true
-    }
-}
-
-#[allow(dead_code)]
-pub fn assert_vector_equal<K, const N: usize>(v1: &Vector<K, N>, v2: &Vector<K, N>)
-    where
-        K: Debug + Clone + ApproximatelyEqual {
-    if v1 != v2 {
-        panic!("assert_vector_equal {v1:?}, {v2:?}");
     }
 }
 

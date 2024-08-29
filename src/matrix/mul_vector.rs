@@ -22,7 +22,6 @@ impl<K, const M: usize, const N: usize> Mul<&Vector<K, N>> for &Matrix<K, M, N>
 
 #[cfg(test)]
 mod test {
-    use crate::vector::assert_vector_equal;
     use super::*;
 
     #[test]
@@ -32,26 +31,26 @@ mod test {
             [0., 1.],
         ]);
         let v = Vector::new([4., 2.]);
-        assert_vector_equal(&(&m * &v), &Vector::new([4., 2.]));
+        assert_eq!(&(&m * &v), &Vector::new([4., 2.]));
         let m = Matrix::new([
             [2., 0.],
             [0., 2.],
         ]);
         let v = Vector::new([4., 2.]);
-        assert_vector_equal(&(&m * &v), &Vector::new([8., 4.]));
+        assert_eq!(&(&m * &v), &Vector::new([8., 4.]));
         let m = Matrix::new([
             [2., -2.],
             [-2., 2.],
         ]);
         let v = Vector::new([4., 2.]);
-        assert_vector_equal(&(&m * &v), &Vector::new([4., -4.]));
+        assert_eq!(&(&m * &v), &Vector::new([4., -4.]));
         let m = Matrix::new([
             [-4., 2.],
             [1., 4.],
             [5., -3.],
         ]);
         let v = Vector::new([4., 2.]);
-        assert_vector_equal(&(&m * &v), &Vector::new([-12., 12., 14.]));
+        assert_eq!(&(&m * &v), &Vector::new([-12., 12., 14.]));
     }
 }
 
