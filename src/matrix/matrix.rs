@@ -53,17 +53,17 @@ mod tests {
     #[test]
     fn new() {
         let scalars = [[1, 2], [3, 4]];
-        let matrix = Matrix::new(scalars.clone());
+        let matrix = Matrix::new(scalars);
         assert_eq!(matrix.scalars, scalars);
     }
 
     #[test]
     fn is_square() {
         let matrix = Matrix::new([[1, 2], [3, 4]]);
-        assert_eq!(matrix.is_square(), true);
+        assert!(matrix.is_square());
 
         let matrix = Matrix::new([[1, 2, 3], [4, 5, 6]]);
-        assert_eq!(matrix.is_square(), false);
+        assert!(!matrix.is_square());
     }
 
     #[test]
@@ -79,7 +79,7 @@ mod tests {
     #[test]
     fn index() {
         let scalars = [[1, 2], [3, 4]];
-        let mut matrix = Matrix::new(scalars.clone());
+        let mut matrix = Matrix::new(scalars);
         const INDEX_1: usize = 0;
         const INDEX_2: usize = 1;
         assert_eq!(scalars[INDEX_1][INDEX_2], matrix[INDEX_1][INDEX_2]);
