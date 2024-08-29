@@ -1,4 +1,7 @@
+use std::array::IntoIter;
 use std::ops::{AddAssign, Index, IndexMut, MulAssign};
+use std::slice::{Iter, IterMut};
+use crate::matrix::Matrix;
 
 #[derive(Debug, Clone)]
 pub struct Vector<K, const N: usize> {
@@ -9,9 +12,17 @@ pub struct Vector<K, const N: usize> {
 impl<K, const N: usize> Vector<K, N> {
     #[allow(dead_code)]
     pub fn new(scalars: [K; N]) -> Self { Self { scalars } }
+
+    pub fn from_fn<F>(callback: F) -> Self
+        where
+            F: FnMut(usize) -> K {
+        Self { scalars: std::array::from_fn(callback) }
+    }
 }
 
-impl<K: Default, const N: usize> Vector<K, N> {
+impl<K, const N: usize> Vector<K, N>
+    where
+        K: Default {
     #[allow(dead_code)]
     pub fn default() -> Self { Vector::new([(); N].map(|_| Default::default())) }
 }
@@ -38,6 +49,16 @@ impl<K, const N: usize> Vector<K, N>
 impl<K, const N: usize> Vector<K, N> {
     #[allow(dead_code)]
     pub fn size(&self) -> usize { N }
+}
+
+// iterators
+impl<K, const N: usize> Vector<K, N> {
+    #[allow(dead_code)]
+    pub fn iter(&self) -> Iter<'_, K> { self.scalars.iter() }
+
+    pub fn into_iter(self) -> IntoIter<K, N> { self.scalars.into_iter() }
+
+    pub fn iter_mut(&mut self) -> IterMut<'_, K> { self.scalars.iter_mut() }
 }
 
 
@@ -78,7 +99,7 @@ mod test {
         let k1 = 5.;
         let k2 = 2.;
         let result = Vector::linear_combination([v1.clone(), v2.clone()], &[k1, k2]);
-        let expected_result = Vector::new([0., 0., 0., 0.]) + v1 * k1 + v2 * k2;
+        let expected_result = v1 * k1 + v2 * k2;
         assert_eq!(result, expected_result);
     }
 

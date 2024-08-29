@@ -1,13 +1,13 @@
-use std::ops::{AddAssign, Div, Mul, Sub};
+use std::ops::{Add, AddAssign, Div, Mul, Sub};
 use crate::sqrt::Sqrt;
 use crate::vector::Vector;
 
 impl<K, const N: usize> Vector<K, N>
     where
-        K: Default + Clone + for<'a> Mul<&'a K, Output=K> + AddAssign + Sqrt + Div<Output=K>
-        + Sub<Output=K> {
+        K: Default + Clone + for<'a> Mul<&'a K, Output=K> + AddAssign + Add<Output=K>
+        + Sqrt + Div<Output=K> + Sub<Output=K> {
     pub fn angle_cos(&self, v2: &Self) -> K {
-        (self * v2) / (self.norm() * &v2.norm())
+        self * v2 / (self.norm() * &v2.norm())
     }
 }
 

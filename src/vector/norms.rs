@@ -1,31 +1,26 @@
-use std::ops::{Mul, AddAssign};
+use std::ops::{Mul, Add};
 use crate::abs::Abs;
 use crate::sqrt::Sqrt;
 use crate::vector::Vector;
 
 impl<K, const N: usize> Vector<K, N>
     where
-        K: Default + Clone + AddAssign + Abs {
+        K: Default + Clone + Add<Output=K> + Abs {
     #[allow(dead_code)]
     pub fn norm_1(&self) -> K {
-        let mut result: K = Default::default();
-        for i in 0..N {
-            result += self[i].clone().abs();
-        }
-        result
+        self.iter()
+            .fold(Default::default(), |acc, elem| acc + elem.clone().abs())
     }
 }
 
 impl<K, const N: usize> Vector<K, N>
     where
-        K: Default + Clone + for<'a> Mul<&'a K, Output=K> + AddAssign + Sqrt {
+        K: Default + Clone + for<'a> Mul<&'a K, Output=K> + Add<Output=K> + Sqrt {
     #[allow(dead_code)]
     pub fn norm(&self) -> K {
-        let mut result: K = Default::default();
-        for i in 0..N {
-            result += self[i].clone() * &self[i];
-        }
-        result.sqrt()
+        self.iter()
+            .fold(Default::default(), |acc: K, elem| acc + elem.clone() * elem)
+            .sqrt()
     }
 }
 
@@ -34,14 +29,15 @@ impl<K, const N: usize> Vector<K, N>
         K: Default + Clone + Abs + PartialOrd {
     #[allow(dead_code)]
     pub fn norm_inf(&self) -> K {
-        let mut result: K = Default::default();
-        for i in 0..N {
-            let tmp = self[i].clone().abs();
-            if tmp > result {
-                result = tmp;
-            }
-        }
-        result
+        self.iter()
+            .fold(Default::default(), |result, elem| {
+                // Could use K::max() if I ever implement a Max trait
+                let elem_abs = elem.clone().abs();
+                if elem_abs > result {
+                    return elem_abs;
+                }
+                result
+            })
     }
 }
 

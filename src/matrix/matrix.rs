@@ -1,4 +1,6 @@
+use std::array::IntoIter;
 use std::ops::{Index, IndexMut};
+use std::slice::{IterMut, Iter};
 
 #[derive(Debug, Clone)]
 pub struct Matrix<K, const X: usize, const Y: usize> {
@@ -19,6 +21,17 @@ impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
     pub const fn get_y_size(&self) -> usize { Y }
 }
 
+// iterators
+impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
+    #[allow(dead_code)]
+    pub fn iter(&self) -> Iter<'_, [K; Y]> { self.scalars.iter() }
+
+    pub fn into_iter(self) -> IntoIter<[K; Y], X> { self.scalars.into_iter() }
+
+    pub fn iter_mut(&mut self) -> IterMut<'_, [K; Y]> { self.scalars.iter_mut() }
+}
+
+// []
 impl<K, const X: usize, const Y: usize> Index<usize> for Matrix<K, X, Y> {
     type Output = [K; Y];
 
