@@ -11,6 +11,12 @@ impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
     #[allow(dead_code)]
     pub fn new(scalars: [[K; Y]; X]) -> Matrix<K, X, Y> { Matrix { scalars } }
 
+    pub fn from_fn<F>(callback: F) -> Self
+        where
+            F: FnMut(usize) -> [K; Y] {
+        Self { scalars: std::array::from_fn(callback) }
+    }
+
     #[allow(dead_code)]
     pub const fn is_square(&self) -> bool { X == Y }
 

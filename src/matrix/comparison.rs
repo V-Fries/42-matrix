@@ -1,9 +1,18 @@
-use crate::matrix::Matrix;
+use crate::{approximately_equal::ApproximatelyEqual, matrix::Matrix};
 
 impl<K, const X: usize, const Y: usize> PartialEq for Matrix<K, X, Y>
     where
-        K: PartialEq {
-    fn eq(&self, other: &Self) -> bool { return self.scalars == other.scalars; }
+        K: Clone + ApproximatelyEqual {
+    fn eq(&self, other: &Self) -> bool {
+        for x in 0..X {
+            for y in 0..Y {
+                if !self[x][y].approximately_equal(&other[x][y]) {
+                    return false;
+                }
+            }
+        }
+        true
+    }
 }
 
 #[cfg(test)]
