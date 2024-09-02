@@ -8,6 +8,7 @@ mod mul_matrix;
 mod trace;
 mod transpose;
 mod matrix_slice;
+mod row_echelon_form;
 
 pub use matrix::Matrix;
 pub use matrix_slice::MatrixSlice;
