@@ -7,9 +7,7 @@ impl<K, const N: usize> Matrix<K, N, N>
         K: Default + for<'a> Add<&'a K, Output = K>
 {
     pub fn trace(&self) -> K {
-        (0..N).fold(K::default(), |acc, i| {
-            acc + &self[i][i]
-        })
+        (0..N).fold(K::default(), |acc, i| acc + &self[i][i])
     }
 }
 

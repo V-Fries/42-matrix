@@ -1,7 +1,6 @@
 use std::array::IntoIter;
 use std::ops::{AddAssign, Index, IndexMut, MulAssign};
 use std::slice::{Iter, IterMut};
-use crate::matrix::Matrix;
 
 #[derive(Debug, Clone)]
 pub struct Vector<K, const N: usize> {

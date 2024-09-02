@@ -27,6 +27,14 @@ impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
     pub const fn get_y_size(&self) -> usize { Y }
 }
 
+impl<K, const X: usize, const Y: usize> Matrix<K, X, Y>
+    where
+        K: Clone {
+    pub fn from_row_major_order(scalars: [[K; X]; Y]) -> Self {
+        Matrix::new(scalars).transpose()
+    }
+}
+
 // iterators
 impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
     #[allow(dead_code)]
@@ -41,14 +49,14 @@ impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
 impl<K, const X: usize, const Y: usize> Index<usize> for Matrix<K, X, Y> {
     type Output = [K; Y];
 
-    fn index(&self, index: usize) -> &Self::Output {
-        &self.scalars[index]
+    fn index(&self, x: usize) -> &Self::Output {
+        &self.scalars[x]
     }
 }
 
 impl<K, const X: usize, const Y: usize> IndexMut<usize> for Matrix<K, X, Y> {
-    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
-        &mut self.scalars[index]
+    fn index_mut(&mut self, x: usize) -> &mut Self::Output {
+        &mut self.scalars[x]
     }
 }
 
