@@ -34,7 +34,7 @@ impl<K, const M: usize, const N: usize> Matrix<K, M, N>
                 matrix[(x, y)] -= tmp;
             }
         }
-        Self::_row_echelon_form(&mut matrix.sub_slice(0, 1));
+        Self::_row_echelon_form(&mut matrix.sub_slice(1, 1));
     }
 
     fn first_non_zero_index(matrix: &MatrixSlice<K, M, N>) -> Option<(usize, usize)> {

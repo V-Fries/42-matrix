@@ -97,5 +97,90 @@ mod test {
         
         let u = Matrix::<i32, 0, 0>::new([]);
         assert_eq!(u.reduced_row_echelon_form(), Matrix::<i32, 0, 0>::new([]));
+
+
+        let u = Matrix::from_row_major_order([
+            [1., 0., 0.],
+            [0., 1., 0.],
+            [0., 0., 1.],
+        ]);
+        assert_eq!(u.reduced_row_echelon_form(), Matrix::from_row_major_order([
+                [1., 0., 0.],
+                [0., 1., 0.],
+                [0., 0., 1.],
+        ]));
+
+        let zero_matrix = Matrix::from_row_major_order([
+            [0., 0., 0.],
+            [0., 0., 0.],
+            [0., 0., 0.],
+        ]);
+        assert_eq!(zero_matrix.reduced_row_echelon_form(), Matrix::from_row_major_order([
+                [0., 0., 0.],
+                [0., 0., 0.],
+                [0., 0., 0.],
+        ]));
+
+        let already_rref = Matrix::from_row_major_order([
+            [1., 2., 0.],
+            [0., 0., 1.],
+            [0., 0., 0.],
+        ]);
+        assert_eq!(already_rref.reduced_row_echelon_form(), Matrix::from_row_major_order([
+                [1., 2., 0.],
+                [0., 0., 1.],
+                [0., 0., 0.],
+        ]));
+
+        let rectangular_matrix = Matrix::from_row_major_order([
+            [1., 2., 3.],
+            [4., 5., 6.],
+        ]);
+        assert_eq!(rectangular_matrix.reduced_row_echelon_form(), Matrix::from_row_major_order([
+                [1., 0., -1.],
+                [0., 1., 2.],
+        ]));
+
+        let row_op_matrix = Matrix::from_row_major_order([
+            [1., 2., -1.],
+            [2., 3., -1.],
+            [-1., -1., 1.],
+        ]);
+        assert_eq!(row_op_matrix.reduced_row_echelon_form(), Matrix::from_row_major_order([
+                [1., 0., 0.],
+                [0., 1., 0.],
+                [0., 0., 1.],
+        ]));
+
+        let larger_matrix = Matrix::from_row_major_order([
+            [2., 1., -1., -2.],
+            [-3., -1., 2., 3.],
+            [-2., 1., 2., 1.],
+            [1., 2., -1., -1.],
+        ]);
+        assert_eq!(larger_matrix.reduced_row_echelon_form(), Matrix::from_row_major_order([
+                [1., 0., 0., 0.],
+                [0., 1., 0., 0.],
+                [0., 0., 1., 0.],
+                [0., 0., 0., 1.],
+        ]));
+
+        let single_row = Matrix::from_row_major_order([
+            [3., 6., 9.],
+        ]);
+        assert_eq!(single_row.reduced_row_echelon_form(), Matrix::from_row_major_order([
+                [1., 2., 3.],
+        ]));
+
+        let single_column = Matrix::from_row_major_order([
+            [4.],
+            [8.],
+            [12.],
+        ]);
+        assert_eq!(single_column.reduced_row_echelon_form(), Matrix::from_row_major_order([
+                [1.],
+                [0.],
+                [0.],
+        ]));
     }
 }
