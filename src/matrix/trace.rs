@@ -16,7 +16,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_trace() {
+    fn trace() {
         let u = Matrix::new([
             [1., 0.],
             [0., 1.],

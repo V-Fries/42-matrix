@@ -90,5 +90,12 @@ mod test {
                 [0.0, 0.0, 1.0, 0.0, -3.6666667],
                 [0.0, 0.0, 0.0, 1.0, 29.5],
         ]));
+
+        let u = Matrix::<i32, 1, 0>::new([[]]);
+        assert_eq!(u.reduced_row_echelon_form(), Matrix::<i32, 1, 0>::new([[]]));
+
+        
+        let u = Matrix::<i32, 0, 0>::new([]);
+        assert_eq!(u.reduced_row_echelon_form(), Matrix::<i32, 0, 0>::new([]));
     }
 }

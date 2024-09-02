@@ -14,7 +14,7 @@ mod test {
     use super::*;    
 
     #[test]
-    fn test_transpose() {
+    fn transpose() {
         let matrix = Matrix::new([
             [1, 2, 3],
             [4, 5, 6],
