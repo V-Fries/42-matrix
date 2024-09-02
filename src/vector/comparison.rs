@@ -6,7 +6,7 @@ impl<K, const N: usize> PartialEq for Vector<K, N>
         K: Clone + ApproximatelyEqual {
     fn eq(&self, other: &Self) -> bool {
         for i in 0..N {
-            if !self[i].approximately_equal(&other[i]) {
+            if !self[i].clone().approximately_equal(&other[i]) {
                 return false;
             }
         }
