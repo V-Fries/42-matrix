@@ -2,71 +2,82 @@ use std::ops::{AddAssign, Div, DivAssign, Mul, SubAssign};
 
 use crate::approximately_equal::ApproximatelyEqual;
 
-use super::{Matrix, MatrixSlice};
+use super::Matrix;
 
-impl<K, const M: usize, const N: usize> Matrix<K, M, N>
+impl<K, const X: usize, const Y: usize> Matrix<K, X, Y>
     where
         K: Clone + ApproximatelyEqual + Default + for<'a> DivAssign<&'a K>
             + for<'a> Mul<&'a K, Output = K> + SubAssign + AddAssign 
             + for<'a> Div<&'a K, Output = K>
 {
     pub fn row_echelon_form<const SHOULD_LEAD_WITH_ONES: bool>(mut self) -> Self {
-        Self::_row_echelon_form::<SHOULD_LEAD_WITH_ONES>(MatrixSlice::new(&mut self, 0, 0));
+        let mut start_x = 0;
+        let mut start_y = 0;
+
+        while start_x < X && start_y < Y {
+            let Some(first_non_zero) = self.get_first_non_zero::<SHOULD_LEAD_WITH_ONES>(
+                start_x, start_y
+            ) else {
+                start_x += 1;
+                continue;
+            };
+
+            for y in (start_y + 1)..Y {
+                self.substract_row::<SHOULD_LEAD_WITH_ONES>(start_x, start_y, y, &first_non_zero);
+            }
+            start_y += 1;
+            start_x += 1;
+        }
         self
     }
 
-    fn _row_echelon_form<const SHOULD_LEAD_WITH_ONES: bool>(mut matrix: MatrixSlice<'_, K, M, N>) {
-        if matrix.get_x_size() == 0 {
+    fn substract_row<const SHOULD_LEAD_WITH_ONES: bool>(&mut self,
+                                                    start_x: usize,
+                                                    start_y: usize,
+                                                    y: usize,
+                                                    first_non_zero: &K) {
+        let scale = if SHOULD_LEAD_WITH_ONES {
+            self[start_x][y].clone()
+        } else {
+            self[start_x][y].clone() / first_non_zero
+        };
+
+        if scale.clone().approximately_equal(&K::default()) {
             return;
         }
 
-        let Some(first_non_zero) = Self::get_first_non_zero::<SHOULD_LEAD_WITH_ONES>(&mut matrix) else {
-            Self::_row_echelon_form::<SHOULD_LEAD_WITH_ONES>(matrix.sub_slice(1, 0));
-            return
-        };
-
-        for y in 1..matrix.get_y_size() {
-            let scale = if SHOULD_LEAD_WITH_ONES {
-                matrix[(0, y)].clone()
-            } else {
-                matrix[(0, y)].clone() / &first_non_zero
-            };
-
-            if scale.clone().approximately_equal(&K::default()) {
-                continue;
-            }
-            for x in 0..matrix.get_x_size() {
-                let tmp = matrix[(x, 0)].clone() * &scale;
-                matrix[(x, y)] -= tmp;
-            }
+        self[start_x][y] = K::default();
+        for x in (start_x + 1)..X {
+            let tmp = self[x][start_y].clone() * &scale;
+            self[x][y] -= tmp;
         }
 
-        Self::_row_echelon_form::<SHOULD_LEAD_WITH_ONES>(matrix.sub_slice(1, 1));
     }
 
-    fn get_first_non_zero<const SHOULD_LEAD_WITH_ONES: bool>(matrix: &mut MatrixSlice<K, M, N>) 
+    fn get_first_non_zero<const SHOULD_LEAD_WITH_ONES: bool>(&mut self,
+                                                             x: usize,
+                                                             y: usize) 
                                                              -> Option<K> {
-        let first_non_zero_y = Self::first_non_zero_y_index(matrix)?;
-        let first_non_zero = matrix[(0, first_non_zero_y)].clone();
+        let first_non_zero_y = self.first_non_zero_y_index(x, y)?;
+        let first_non_zero = self[x][first_non_zero_y].clone();
 
-        if first_non_zero_y != 0 { 
-            for x in 0..matrix.get_x_size() {
+        if first_non_zero_y != y { 
+            for x in x..X {
                 let tmp = if SHOULD_LEAD_WITH_ONES {
-                    matrix[(x, first_non_zero_y)].clone() / &first_non_zero
+                    self[x][first_non_zero_y].clone() / &first_non_zero
                 } else {
-                    matrix[(x, first_non_zero_y)].clone()
+                    self[x][first_non_zero_y].clone()
                 };
-                matrix[(x, 0)] += tmp;
+                self[x][y] += tmp;
             }
         } else if SHOULD_LEAD_WITH_ONES {
-            matrix.apply_op_to_row(0, |elem| *elem /= &first_non_zero);
+            self.apply_op_to_row(x, y, |elem| *elem /= &first_non_zero);
         }
         Some(first_non_zero)
     }
 
-    fn first_non_zero_y_index(matrix: &MatrixSlice<K, M, N>) -> Option<usize> {
-        (0..matrix.get_y_size())
-            .find(|y| !matrix[(0, *y)].clone().approximately_equal(&K::default()))
+    fn first_non_zero_y_index(&self, x: usize, y_start: usize) -> Option<usize> {
+        (y_start..Y).find(|y| !self[x][*y].clone().approximately_equal(&K::default()))
     }
 }
 

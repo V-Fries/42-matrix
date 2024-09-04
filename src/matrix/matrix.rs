@@ -25,6 +25,15 @@ impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
 
     #[allow(dead_code)]
     pub const fn get_y_size(&self) -> usize { Y }
+
+    pub fn apply_op_to_row(&mut self, 
+                           x_start: usize,
+                           row_index: usize,
+                           mut op: impl FnMut(&mut K)) {
+        for x in x_start..X {
+            op(&mut self[x][row_index]);
+        }
+    }
 }
 
 impl<K, const X: usize, const Y: usize> Matrix<K, X, Y>
