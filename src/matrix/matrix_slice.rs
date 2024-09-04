@@ -18,7 +18,7 @@ impl<'a, K, const M: usize, const N: usize> MatrixSlice<'a, K, M, N> {
         }
     }
 
-    pub fn sub_slice(&'a mut self, x: usize, y: usize) -> MatrixSlice<'a, K, M, N>{
+    pub fn sub_slice(self, x: usize, y: usize) -> Self {
         Self {
             matrix: self.matrix,
             x: self.x + x,
