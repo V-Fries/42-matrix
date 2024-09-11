@@ -10,33 +10,16 @@ impl<K, const N: usize> Matrix<K, N, N>
     where
         K: Clone + ApproximatelyEqual + Default + for<'a> DivAssign<&'a K>
             + for<'a> Mul<&'a K, Output = K> + SubAssign + AddAssign 
-            + for<'a> Div<&'a K, Output = K> + One + PartialEq,
-        [(); N + N]: {
+            + for<'a> Div<&'a K, Output = K> + One + PartialEq {
     #[allow(dead_code)]
     fn inverse(self) -> Result<Self, ()> {
-        // TODO optimize this, it clones too much
+        let mut inverse = Self::identity();
+        let row_echelon = self._reduced_row_echelon_form(Some(&mut inverse));
 
-        let m = Matrix::<K, {N + N}, N>::from_fn(|x, y| {
-            if x < N {
-                return self[x][y].clone();
-            }
-            if x - N == y {
-                return K::ONE;
-            }
-            K::default()
-        })
-            .reduced_row_echelon_form();
-
-        for x in 0..N {
-            for y in 0..N {
-                if (x == y && m[x][y] != K::ONE)
-                        || (x != y && m[x][y] != K::default()) {
-                    return Err(())
-                }
-            }
+        if row_echelon != Self::identity() {
+            return Err(());
         }
-
-        Ok(Self::from_fn(|x, y| m[N + x][y].clone()))
+        Ok(inverse)
     }
 }
 

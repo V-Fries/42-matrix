@@ -12,16 +12,30 @@ impl<K, const M: usize, const N: usize> Matrix<K, M, N>
             + for<'a> Div<&'a K, Output = K>
 {
     pub fn reduced_row_echelon_form(self) -> Self {
-        let mut m = self.row_echelon_form::<true>();
+        self._reduced_row_echelon_form(None)
+    }
+
+    pub(in crate::matrix) fn _reduced_row_echelon_form(self, 
+                                                       mut inverse: Option<&mut Self>) 
+                                                       -> Self {
+        let mut m = self._row_echelon_form::<true>(&mut inverse);
 
         let mut last_y = N;
         while let Some((next_one_x, next_one_y)) = Self::find_next_one(&m, last_y) {
             for y in 0..next_one_y {
-                let scale = m[next_one_x][y].clone(); 
+                let scale = m[next_one_x][y].clone();
+
                 m[next_one_x][y] = K::default();
                 for x in (next_one_x + 1)..M {
                     let tmp = m[x][next_one_y].clone() * &scale;
                     m[x][y] -= tmp;
+                }
+
+                if let Some(inverse) = inverse.as_mut() {
+                    for x in 0..M {
+                        let tmp = inverse[x][next_one_y].clone() * &scale;
+                        inverse[x][y] -= tmp;
+                    }
                 }
             }
             last_y = next_one_y;
@@ -31,6 +45,7 @@ impl<K, const M: usize, const N: usize> Matrix<K, M, N>
 
     fn find_next_one(&self, last_y: usize) -> Option<(usize, usize)> {
         if last_y == 1 {
+            // TODO remove this and put 1 instead of 0 in the loop
             return None;
         }
 
