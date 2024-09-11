@@ -5,7 +5,7 @@ impl<K, const M: usize, const N: usize> Matrix<K, M, N>
         K: Clone
 {
     pub fn transpose(&self) -> Matrix<K, N, M> {
-        Matrix::from_fn(|x| std::array::from_fn(|y| self[y][x].clone()))
+        Matrix::from_fn(|x, y| self[y][x].clone())
     }
 }
 

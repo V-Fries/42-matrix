@@ -2,6 +2,12 @@ use std::array::IntoIter;
 use std::ops::{Index, IndexMut};
 use std::slice::{IterMut, Iter};
 
+use crate::one::One;
+
+
+type XIndex = usize;
+type YIndex = usize;
+
 #[derive(Debug, Clone)]
 pub struct Matrix<K, const X: usize, const Y: usize> {
     pub(in crate::matrix) scalars: [[K; Y]; X],
@@ -9,12 +15,14 @@ pub struct Matrix<K, const X: usize, const Y: usize> {
 
 impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
     #[allow(dead_code)]
-    pub fn new(scalars: [[K; Y]; X]) -> Matrix<K, X, Y> { Matrix { scalars } }
+    pub fn new(scalars: [[K; Y]; X]) -> Self { Matrix { scalars } }
 
-    pub fn from_fn<F>(callback: F) -> Self
+    pub fn from_fn<F>(mut callback: F) -> Self
         where
-            F: FnMut(usize) -> [K; Y] {
-        Self { scalars: std::array::from_fn(callback) }
+            F: FnMut(XIndex, YIndex) -> K {
+        Self { 
+            scalars: std::array::from_fn(|x| std::array::from_fn(|y| callback(x, y)))
+        }
     }
 
     #[allow(dead_code)]
@@ -36,11 +44,27 @@ impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
     }
 }
 
+impl<K, const N: usize> Matrix<K, N, N> 
+    where 
+        K: One + Default {
+    pub fn identity() -> Self {
+        Self::from_fn(|x, y| if x == y { K::ONE } else { K::default() })
+    }
+}
+
 impl<K, const X: usize, const Y: usize> Matrix<K, X, Y>
     where
         K: Clone {
     pub fn from_row_major_order(scalars: [[K; X]; Y]) -> Self {
         Matrix::new(scalars).transpose()
+    }
+}
+
+impl<K, const X: usize, const Y: usize> Default for Matrix<K, X, Y> 
+    where
+        K: Default {
+    fn default() -> Self {
+        Self::from_fn(|_, _| K::default())
     }
 }
 

@@ -9,11 +9,11 @@ where
     type Output = Matrix<K, M, P>;
 
     fn mul(self, rhs: &Matrix<K, N, P>) -> Self::Output {
-        Self::Output::from_fn(|x| std::array::from_fn(|y| {
+        Self::Output::from_fn(|x, y| {
             (0..N).fold(Default::default(), |acc, i| {
                 acc + self[x][i].clone() * &rhs[i][y]
             })
-        }))
+        })
     }
 }
 
