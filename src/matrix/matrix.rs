@@ -13,10 +13,11 @@ pub struct Matrix<K, const X: usize, const Y: usize> {
     pub(in crate::matrix) scalars: [[K; Y]; X],
 }
 
-impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
-    #[allow(dead_code)]
-    pub fn new(scalars: [[K; Y]; X]) -> Self { Matrix { scalars } }
+impl<K, const X: usize, const Y: usize> From<[[K; Y]; X]> for Matrix<K, X, Y> {
+    fn from(scalars: [[K; Y]; X]) -> Self { Matrix { scalars } }
+}
 
+impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
     pub fn from_fn<F>(mut callback: F) -> Self
         where
             F: FnMut(XIndex, YIndex) -> K {
@@ -56,7 +57,7 @@ impl<K, const X: usize, const Y: usize> Matrix<K, X, Y>
     where
         K: Clone {
     pub fn from_row_major_order(scalars: [[K; X]; Y]) -> Self {
-        Matrix::new(scalars).transpose()
+        Matrix::from(scalars).transpose()
     }
 }
 
@@ -100,16 +101,16 @@ mod tests {
     #[test]
     fn new() {
         let scalars = [[1, 2], [3, 4]];
-        let matrix = Matrix::new(scalars);
+        let matrix = Matrix::from(scalars);
         assert_eq!(matrix.scalars, scalars);
     }
 
     #[test]
     fn is_square() {
-        let matrix = Matrix::new([[1, 2], [3, 4]]);
+        let matrix = Matrix::from([[1, 2], [3, 4]]);
         assert!(matrix.is_square());
 
-        let matrix = Matrix::new([[1, 2, 3], [4, 5, 6]]);
+        let matrix = Matrix::from([[1, 2, 3], [4, 5, 6]]);
         assert!(!matrix.is_square());
     }
 
@@ -118,7 +119,7 @@ mod tests {
         const X: usize = 1;
         const Y: usize = 2;
 
-        let matrix = Matrix::<f32, X, Y>::new([[4.0f32, 4.0f32]]);
+        let matrix = Matrix::<f32, X, Y>::from([[4.0f32, 4.0f32]]);
         assert_eq!(X, matrix.get_x_size());
         assert_eq!(Y, matrix.get_y_size());
     }
@@ -126,7 +127,7 @@ mod tests {
     #[test]
     fn index() {
         let scalars = [[1, 2], [3, 4]];
-        let mut matrix = Matrix::new(scalars);
+        let mut matrix = Matrix::from(scalars);
         const INDEX_1: usize = 0;
         const INDEX_2: usize = 1;
         assert_eq!(scalars[INDEX_1][INDEX_2], matrix[INDEX_1][INDEX_2]);

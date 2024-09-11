@@ -48,17 +48,17 @@ mod test {
 
     #[test]
     fn norms() {
-        let v = Vector::new([0., 0., 0.]);
+        let v = Vector::from([0., 0., 0.]);
         assert_approximately_equal(v.norm_1(), 0.);
         assert_approximately_equal(v.norm(), 0.);
         assert_approximately_equal(v.norm_inf(), 0.);
 
-        let v = Vector::new([1., 2., 3.]);
+        let v = Vector::from([1., 2., 3.]);
         assert_approximately_equal(v.norm_1(), 6.);
         assert_approximately_equal(v.norm(), 3.74165738);
         assert_approximately_equal(v.norm_inf(), 3.);
 
-        let v = Vector::new([-1., -2.]);
+        let v = Vector::from([-1., -2.]);
         assert_approximately_equal(v.norm_1(), 3.);
         assert_approximately_equal(v.norm(), 2.236067977);
         assert_approximately_equal(v.norm_inf(), 2.);

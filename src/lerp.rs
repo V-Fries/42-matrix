@@ -23,12 +23,12 @@ mod test {
 
         assert_eq!(super::lerp(21., 42., 0.3), 27.3);
 
-        assert_eq!(super::lerp(Vector::new([2., 1.]),
-                        Vector::new([4., 2.]), 0.3),
-                   Vector::new([2.6, 1.3]));
+        assert_eq!(super::lerp(Vector::from([2., 1.]),
+                        Vector::from([4., 2.]), 0.3),
+                   Vector::from([2.6, 1.3]));
 
-        assert_eq!(super::lerp(Matrix::new([[2., 1.], [3., 4.]]),
-                        Matrix::new([[20., 10.], [30., 40.]]), 0.5),
-                   Matrix::new([[11., 5.5], [16.5, 22.]]));
+        assert_eq!(super::lerp(Matrix::from([[2., 1.], [3., 4.]]),
+                        Matrix::from([[20., 10.], [30., 40.]]), 0.5),
+                   Matrix::from([[11., 5.5], [16.5, 22.]]));
     }
 }

@@ -55,8 +55,8 @@ mod test {
     fn add_assign_matrix() {
         let mut scalars_m1 = [[23., 21.], [43., 53.]];
         let scalars_m2 = [[5., 23.], [4., 2.]];
-        let m1 = Matrix::new(scalars_m1.clone());
-        let m2 = Matrix::new(scalars_m2.clone());
+        let m1 = Matrix::from(scalars_m1.clone());
+        let m2 = Matrix::from(scalars_m2.clone());
         add_lists(&mut scalars_m1, &scalars_m2);
 
         let mut result = m1.clone();
@@ -79,8 +79,8 @@ mod test {
     fn add_matrix() {
         let mut scalars_m1 = [[23., 21.], [43., 53.]];
         let scalars_m2 = [[5., 23.], [4., 2.]];
-        let m1 = Matrix::new(scalars_m1.clone());
-        let m2 = Matrix::new(scalars_m2.clone());
+        let m1 = Matrix::from(scalars_m1.clone());
+        let m2 = Matrix::from(scalars_m2.clone());
         add_lists(&mut scalars_m1, &scalars_m2);
 
         let result = m1.clone() + &m2;

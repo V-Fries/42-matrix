@@ -54,7 +54,7 @@ mod test {
     // Matrix<K> *= K
     #[test]
     fn mul_assign_k() {
-        let v = Matrix::new([
+        let v = Matrix::from([
             [4., 2.],
             [23., 12.],
         ]);
@@ -77,7 +77,7 @@ mod test {
     // Matrix<K> * K
     #[test]
     fn mul_k() {
-        let v = Matrix::new([
+        let v = Matrix::from([
             [4., 2.],
             [23., 12.],
         ]);

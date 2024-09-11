@@ -18,7 +18,7 @@ mod test {
 
     #[test]
     fn norm() {
-        assert_eq!(Vector::new([3., 0.]).normalize(), Vector::new([1., 0.]));
-        assert_eq!(Vector::new([0., 5.]).normalize(), Vector::new([0., 1.]));
+        assert_eq!(Vector::from([3., 0.]).normalize(), Vector::from([1., 0.]));
+        assert_eq!(Vector::from([0., 5.]).normalize(), Vector::from([0., 1.]));
     }
 }

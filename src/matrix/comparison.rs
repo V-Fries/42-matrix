@@ -22,7 +22,7 @@ mod test {
     // &Matrix<K> == &Matrix<K>
     #[test]
     fn equality() {
-        let m1 = Matrix::new([[4, 324, 5], [43, 542, 54]]);
+        let m1 = Matrix::from([[4, 324, 5], [43, 542, 54]]);
         assert_eq!(m1 == m1.clone(), true);
 
         for x in 0..m1.get_x_size() {

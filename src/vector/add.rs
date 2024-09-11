@@ -53,8 +53,8 @@ mod test {
     fn add_assign_vec() {
         let scalars_v1 = [23., 21., 33.];
         let scalars_v2 = [4., 2., 3.];
-        let v1 = Vector::new(scalars_v1.clone());
-        let v2 = Vector::new(scalars_v2.clone());
+        let v1 = Vector::from(scalars_v1.clone());
+        let v2 = Vector::from(scalars_v2.clone());
 
         let mut result = v1.clone();
         result += &v2;
@@ -74,8 +74,8 @@ mod test {
     fn add_vec() {
         let scalars_v1 = [23., 21., 33.];
         let scalars_v2 = [4., 2., 3.];
-        let v1 = Vector::new(scalars_v1.clone());
-        let v2 = Vector::new(scalars_v2.clone());
+        let v1 = Vector::from(scalars_v1.clone());
+        let v2 = Vector::from(scalars_v2.clone());
 
         let result = v1.clone() + &v2;
         assert_eq!(v1[0] + v2[0], result[0]);

@@ -52,7 +52,7 @@ mod test {
     // Vector<K> /= K
     #[test]
     fn mul_assign_k() {
-        let v = Vector::new([4., 2., 3.]);
+        let v = Vector::from([4., 2., 3.]);
         let k = 5.;
 
         let mut result = v.clone();
@@ -71,7 +71,7 @@ mod test {
     // Vector<K> / K
     #[test]
     fn mul_k() {
-        let v = Vector::new([4., 2., 3.]);
+        let v = Vector::from([4., 2., 3.]);
         let k = 5.;
 
         let result = v.clone() / &k;

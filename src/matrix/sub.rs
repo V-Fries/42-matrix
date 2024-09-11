@@ -55,8 +55,8 @@ mod test {
     fn sub_assign_matrix() {
         let mut scalars_v1 = [[23., 21.], [43., 53.]];
         let scalars_v2 = [[5., 23.], [4., 2.]];
-        let v1 = Matrix::new(scalars_v1.clone());
-        let v2 = Matrix::new(scalars_v2.clone());
+        let v1 = Matrix::from(scalars_v1.clone());
+        let v2 = Matrix::from(scalars_v2.clone());
         sub_lists(&mut scalars_v1, &scalars_v2);
 
         let mut result = v1.clone();
@@ -79,8 +79,8 @@ mod test {
     fn sub_matrix() {
         let mut scalars_v1 = [[23., 21.], [43., 53.]];
         let scalars_v2 = [[5., 23.], [4., 2.]];
-        let v1 = Matrix::new(scalars_v1.clone());
-        let v2 = Matrix::new(scalars_v2.clone());
+        let v1 = Matrix::from(scalars_v1.clone());
+        let v2 = Matrix::from(scalars_v2.clone());
         sub_lists(&mut scalars_v1, &scalars_v2);
 
         let mut result = v1.clone() - &v2;

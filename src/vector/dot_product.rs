@@ -50,8 +50,8 @@ mod test {
     // Vector<K> * Vector<K>
     #[test]
     fn dot_product() {
-        let v1 = Vector::new([34., 2., 4.]);
-        let v2 = Vector::new([3., 23., 24.]);
+        let v1 = Vector::from([34., 2., 4.]);
+        let v2 = Vector::from([3., 23., 24.]);
         let expected_result = v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
         assert_eq!(expected_result, &v1 * &v2);
         assert_eq!(expected_result, &v1 * v2.clone());

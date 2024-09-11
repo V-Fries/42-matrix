@@ -26,31 +26,31 @@ mod test {
 
     #[test]
     fn mat_times_vec() {
-        let m = Matrix::new([
+        let m = Matrix::from([
             [1., 0.],
             [0., 1.],
         ]);
-        let v = Vector::new([4., 2.]);
-        assert_eq!(&(&m * &v), &Vector::new([4., 2.]));
-        let m = Matrix::new([
+        let v = Vector::from([4., 2.]);
+        assert_eq!(&(&m * &v), &Vector::from([4., 2.]));
+        let m = Matrix::from([
             [2., 0.],
             [0., 2.],
         ]);
-        let v = Vector::new([4., 2.]);
-        assert_eq!(&(&m * &v), &Vector::new([8., 4.]));
-        let m = Matrix::new([
+        let v = Vector::from([4., 2.]);
+        assert_eq!(&(&m * &v), &Vector::from([8., 4.]));
+        let m = Matrix::from([
             [2., -2.],
             [-2., 2.],
         ]);
-        let v = Vector::new([4., 2.]);
-        assert_eq!(&(&m * &v), &Vector::new([4., -4.]));
-        let m = Matrix::new([
+        let v = Vector::from([4., 2.]);
+        assert_eq!(&(&m * &v), &Vector::from([4., -4.]));
+        let m = Matrix::from([
             [-4., 2.],
             [1., 4.],
             [5., -3.],
         ]);
-        let v = Vector::new([4., 2.]);
-        assert_eq!(&(&m * &v), &Vector::new([-12., 12., 14.]));
+        let v = Vector::from([4., 2.]);
+        assert_eq!(&(&m * &v), &Vector::from([-12., 12., 14.]));
     }
 }
 

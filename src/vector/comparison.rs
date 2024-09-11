@@ -21,16 +21,16 @@ mod test {
     // &Vector<K> == &Vector<K>
     #[test]
     fn equality() {
-        let v1 = Vector::new([4, 324, 5]);
+        let v1 = Vector::from([4, 324, 5]);
         assert_eq!(v1 == v1, true);
-        assert_eq!(v1 == Vector::new([v1[0] + 1, v1[1], v1[2]]), false);
-        assert_eq!(v1 == Vector::new([v1[0], v1[1] + 1, v1[2]]), false);
-        assert_eq!(v1 == Vector::new([v1[0], v1[1], v1[2] - 1]), false);
+        assert_eq!(v1 == Vector::from([v1[0] + 1, v1[1], v1[2]]), false);
+        assert_eq!(v1 == Vector::from([v1[0], v1[1] + 1, v1[2]]), false);
+        assert_eq!(v1 == Vector::from([v1[0], v1[1], v1[2] - 1]), false);
 
-        let v1 = Vector::new([4.43, 324.45, 5.67]);
+        let v1 = Vector::from([4.43, 324.45, 5.67]);
         assert_eq!(v1 == v1, true);
-        assert_eq!(v1 == Vector::new([v1[0] + 1.5, v1[1], v1[2]]), false);
-        assert_eq!(v1 == Vector::new([v1[0], v1[1] + 1.5, v1[2]]), false);
-        assert_eq!(v1 == Vector::new([v1[0], v1[1], v1[2] - 1.5]), false);
+        assert_eq!(v1 == Vector::from([v1[0] + 1.5, v1[1], v1[2]]), false);
+        assert_eq!(v1 == Vector::from([v1[0], v1[1] + 1.5, v1[2]]), false);
+        assert_eq!(v1 == Vector::from([v1[0], v1[1], v1[2] - 1.5]), false);
     }
 }
