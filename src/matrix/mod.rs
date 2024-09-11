@@ -11,6 +11,7 @@ mod matrix_slice;
 mod row_echelon_form;
 mod reduced_row_echelon_form;
 mod determinant;
+mod inverse;
 
 pub use matrix::Matrix;
 pub use matrix_slice::MatrixSlice;
