@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  clippy:
+  test:
     runs-on: ubuntu-latest
 
     steps:
