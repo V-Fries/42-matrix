@@ -2,8 +2,9 @@ use crate::approximately_equal::ApproximatelyEqual;
 use crate::vector::Vector;
 
 impl<K, const N: usize> PartialEq for Vector<K, N>
-    where
-        K: Clone + ApproximatelyEqual {
+where
+    K: Clone + ApproximatelyEqual,
+{
     fn eq(&self, other: &Self) -> bool {
         for i in 0..N {
             if !self[i].clone().approximately_equal(&other[i]) {

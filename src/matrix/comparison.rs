@@ -1,8 +1,9 @@
 use crate::{approximately_equal::ApproximatelyEqual, matrix::Matrix};
 
 impl<K, const X: usize, const Y: usize> PartialEq for Matrix<K, X, Y>
-    where
-        K: Clone + ApproximatelyEqual {
+where
+    K: Clone + ApproximatelyEqual,
+{
     fn eq(&self, other: &Self) -> bool {
         for x in 0..X {
             for y in 0..Y {

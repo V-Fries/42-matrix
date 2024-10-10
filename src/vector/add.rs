@@ -4,8 +4,9 @@ use crate::vector::Vector;
 
 // Vector<K> += &Vector<K>
 impl<K, const N: usize> AddAssign<&Self> for Vector<K, N>
-    where
-        K: for<'a> AddAssign<&'a K> {
+where
+    K: for<'a> AddAssign<&'a K>,
+{
     fn add_assign(&mut self, other: &Self) {
         for i in 0..N {
             self[i] += &other[i];
@@ -15,8 +16,9 @@ impl<K, const N: usize> AddAssign<&Self> for Vector<K, N>
 
 // Vector<K> + &Vector<K>
 impl<K, const N: usize> Add<&Self> for Vector<K, N>
-    where
-        K: for<'a> AddAssign<&'a K> {
+where
+    K: for<'a> AddAssign<&'a K>,
+{
     type Output = Self;
 
     fn add(mut self, other: &Self) -> Self::Output {
@@ -27,15 +29,19 @@ impl<K, const N: usize> Add<&Self> for Vector<K, N>
 
 // Vector<K> += Vector<K>
 impl<K, const N: usize> AddAssign<Self> for Vector<K, N>
-    where
-        K: for<'a> AddAssign<&'a K> {
-    fn add_assign(&mut self, other: Self) { *self += &other; }
+where
+    K: for<'a> AddAssign<&'a K>,
+{
+    fn add_assign(&mut self, other: Self) {
+        *self += &other;
+    }
 }
 
 // Vector<K> + Vector<K>
 impl<K, const N: usize> Add<Self> for Vector<K, N>
-    where
-        K: for<'a> AddAssign<&'a K> {
+where
+    K: for<'a> AddAssign<&'a K>,
+{
     type Output = Self;
 
     fn add(mut self, other: Self) -> Self::Output {

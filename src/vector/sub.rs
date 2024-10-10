@@ -4,8 +4,9 @@ use crate::vector::Vector;
 
 // Vector -= &Vector
 impl<K, const N: usize> SubAssign<&Self> for Vector<K, N>
-    where
-        K: for<'a> SubAssign<&'a K> {
+where
+    K: for<'a> SubAssign<&'a K>,
+{
     fn sub_assign(&mut self, other: &Self) {
         for i in 0..N {
             self[i] -= &other[i];
@@ -15,8 +16,9 @@ impl<K, const N: usize> SubAssign<&Self> for Vector<K, N>
 
 // Vector - &Vector
 impl<K, const N: usize> Sub<&Self> for Vector<K, N>
-    where
-        K: for<'a> SubAssign<&'a K> {
+where
+    K: for<'a> SubAssign<&'a K>,
+{
     type Output = Self;
 
     fn sub(mut self, other: &Self) -> Self::Output {
@@ -27,15 +29,19 @@ impl<K, const N: usize> Sub<&Self> for Vector<K, N>
 
 // Vector -= Vector
 impl<K, const N: usize> SubAssign<Self> for Vector<K, N>
-    where
-        K: for<'a> SubAssign<&'a K> {
-    fn sub_assign(&mut self, other: Self) { *self -= &other; }
+where
+    K: for<'a> SubAssign<&'a K>,
+{
+    fn sub_assign(&mut self, other: Self) {
+        *self -= &other;
+    }
 }
 
 // Vector - Vector
 impl<K, const N: usize> Sub<Self> for Vector<K, N>
-    where
-        K: for<'a> SubAssign<&'a K> {
+where
+    K: for<'a> SubAssign<&'a K>,
+{
     type Output = Self;
 
     fn sub(mut self, other: Self) -> Self::Output {

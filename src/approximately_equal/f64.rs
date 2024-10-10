@@ -6,4 +6,3 @@ impl ApproximatelyEqual for f64 {
         (self - *other).abs() < Self::EQ_EPSILON
     }
 }
-

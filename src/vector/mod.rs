@@ -1,13 +1,14 @@
-mod vector;
 mod add;
-mod sub;
-mod scalar_mul;
-mod comparison;
-mod dot_product;
-mod norms;
 mod angle_cos;
-mod normalize;
-mod scalar_div;
+mod comparison;
 mod cross_product;
+mod dot_product;
+mod normalize;
+mod norms;
+mod scalar_div;
+mod scalar_mul;
+mod sub;
+#[allow(clippy::module_inception)]
+mod vector;
 
 pub use vector::Vector;

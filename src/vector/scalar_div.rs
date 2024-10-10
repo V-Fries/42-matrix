@@ -4,8 +4,9 @@ use crate::vector::Vector;
 
 // Vector<K> /= &K
 impl<K, const N: usize> DivAssign<&K> for Vector<K, N>
-    where
-        K: for<'a> DivAssign<&'a K> {
+where
+    K: for<'a> DivAssign<&'a K>,
+{
     fn div_assign(&mut self, other: &K) {
         for i in 0..N {
             self[i] /= other;
@@ -15,8 +16,9 @@ impl<K, const N: usize> DivAssign<&K> for Vector<K, N>
 
 // Vector<K> / &K
 impl<K, const N: usize> Div<&K> for Vector<K, N>
-    where
-        K: for<'a> DivAssign<&'a K> {
+where
+    K: for<'a> DivAssign<&'a K>,
+{
     type Output = Self;
 
     fn div(mut self, other: &K) -> Self::Output {
@@ -27,15 +29,19 @@ impl<K, const N: usize> Div<&K> for Vector<K, N>
 
 // Vector<K> /= K
 impl<K, const N: usize> DivAssign<K> for Vector<K, N>
-    where
-        K: for<'a> DivAssign<&'a K> {
-    fn div_assign(&mut self, other: K) { *self /= &other; }
+where
+    K: for<'a> DivAssign<&'a K>,
+{
+    fn div_assign(&mut self, other: K) {
+        *self /= &other;
+    }
 }
 
 // Vector<K> / K
 impl<K, const N: usize> Div<K> for Vector<K, N>
-    where
-        K: for<'a> DivAssign<&'a K> {
+where
+    K: for<'a> DivAssign<&'a K>,
+{
     type Output = Self;
 
     fn div(mut self, other: K) -> Self::Output {
@@ -43,7 +49,6 @@ impl<K, const N: usize> Div<K> for Vector<K, N>
         self
     }
 }
-
 
 #[cfg(test)]
 mod test {

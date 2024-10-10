@@ -4,8 +4,9 @@ use crate::matrix::Matrix;
 
 // Matrix<K> += &Matrix<K>
 impl<K, const X: usize, const Y: usize> AddAssign<&Self> for Matrix<K, X, Y>
-    where
-        K: for<'a> AddAssign<&'a K> {
+where
+    K: for<'a> AddAssign<&'a K>,
+{
     fn add_assign(&mut self, other: &Self) {
         for x in 0..X {
             for y in 0..Y {
@@ -17,8 +18,9 @@ impl<K, const X: usize, const Y: usize> AddAssign<&Self> for Matrix<K, X, Y>
 
 // Matrix<K> + &Matrix<K>
 impl<K, const X: usize, const Y: usize> Add<&Self> for Matrix<K, X, Y>
-    where
-        K: for<'a> AddAssign<&'a K> {
+where
+    K: for<'a> AddAssign<&'a K>,
+{
     type Output = Self;
 
     fn add(mut self, other: &Self) -> Self::Output {
@@ -29,15 +31,19 @@ impl<K, const X: usize, const Y: usize> Add<&Self> for Matrix<K, X, Y>
 
 // Matrix<K> += Matrix<K>
 impl<K, const X: usize, const Y: usize> AddAssign<Self> for Matrix<K, X, Y>
-    where
-        K: for<'a> AddAssign<&'a K> {
-    fn add_assign(&mut self, other: Self) { *self += &other }
+where
+    K: for<'a> AddAssign<&'a K>,
+{
+    fn add_assign(&mut self, other: Self) {
+        *self += &other
+    }
 }
 
 // Matrix<K> + Matrix<K>
 impl<K, const X: usize, const Y: usize> Add<Self> for Matrix<K, X, Y>
-    where
-        K: for<'a> AddAssign<&'a K> {
+where
+    K: for<'a> AddAssign<&'a K>,
+{
     type Output = Self;
 
     fn add(mut self, other: Self) -> Self::Output {

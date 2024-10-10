@@ -5,10 +5,15 @@ use crate::approximately_equal::ApproximatelyEqual;
 use super::Matrix;
 
 impl<K, const N: usize> Matrix<K, N, N>
-    where
-        K: Clone + ApproximatelyEqual + Default + for<'a> DivAssign<&'a K>
-            + for<'a> Mul<&'a K, Output = K> + SubAssign + AddAssign 
-            + for<'a> Div<&'a K, Output = K>
+where
+    K: Clone
+        + ApproximatelyEqual
+        + Default
+        + for<'a> DivAssign<&'a K>
+        + for<'a> Mul<&'a K, Output = K>
+        + SubAssign
+        + AddAssign
+        + for<'a> Div<&'a K, Output = K>,
 {
     pub fn determinant(self) -> K {
         if N == 0 {
@@ -31,60 +36,37 @@ mod test {
         let u = Matrix::from_row_major_order([]);
         assert_approximately_equal(u.determinant(), 0.);
 
-        let u = Matrix::from_row_major_order([
-            [ 1., -1.],
-            [-1., 1.],
-        ]);
+        let u = Matrix::from_row_major_order([[1., -1.], [-1., 1.]]);
         assert_approximately_equal(u.determinant(), 0.);
 
-        let u = Matrix::from_row_major_order([
-            [2., 0., 0.],
-            [0., 2., 0.],
-            [0., 0., 2.],
-        ]);
+        let u = Matrix::from_row_major_order([[2., 0., 0.], [0., 2., 0.], [0., 0., 2.]]);
         assert_approximately_equal(u.determinant(), 8.);
 
-        let u = Matrix::from_row_major_order([
-            [8., 5., -2.],
-            [4., 7., 20.],
-            [7., 6., 1.],
-        ]);
+        let u = Matrix::from_row_major_order([[8., 5., -2.], [4., 7., 20.], [7., 6., 1.]]);
         assert_approximately_equal(u.determinant(), -174.);
 
         let u = Matrix::from_row_major_order([
-            [ 8., 5., -2., 4.],
-            [ 4., 2.5, 20., 4.],
-            [ 8., 5., 1., 4.],
+            [8., 5., -2., 4.],
+            [4., 2.5, 20., 4.],
+            [8., 5., 1., 4.],
             [28., -4., 17., 1.],
         ]);
         assert_approximately_equal(u.determinant(), 1032.);
 
         // Test for a 1x1 matrix (edge case)
-        let u = Matrix::from_row_major_order([
-            [5.],
-        ]);
+        let u = Matrix::from_row_major_order([[5.]]);
         assert_approximately_equal(u.determinant(), 5.);
 
         // Test for a 2x2 matrix with a non-zero determinant
-        let u = Matrix::from_row_major_order([
-            [3., 8.],
-            [4., 6.],
-        ]);
+        let u = Matrix::from_row_major_order([[3., 8.], [4., 6.]]);
         assert_approximately_equal(u.determinant(), -14.);
 
         // Test for a 2x2 singular matrix (determinant should be zero)
-        let u = Matrix::from_row_major_order([
-            [2., 4.],
-            [1., 2.],
-        ]);
+        let u = Matrix::from_row_major_order([[2., 4.], [1., 2.]]);
         assert_approximately_equal(u.determinant(), 0.);
 
         // Test for a 3x3 matrix with a known integer determinant
-        let u = Matrix::from_row_major_order([
-            [1., 2., 3.],
-            [4., 5., 6.],
-            [7., 8., 9.],
-        ]);
+        let u = Matrix::from_row_major_order([[1., 2., 3.], [4., 5., 6.], [7., 8., 9.]]);
         assert_approximately_equal(u.determinant(), 0.);
 
         // Test for a 4x4 matrix with a known determinant
@@ -116,11 +98,7 @@ mod test {
         assert_approximately_equal(u.determinant(), 0.);
 
         // Test for a 3x3 identity matrix (determinant should be 1)
-        let u = Matrix::from_row_major_order([
-            [1., 0., 0.],
-            [0., 1., 0.],
-            [0., 0., 1.],
-        ]);
+        let u = Matrix::from_row_major_order([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
         assert_approximately_equal(u.determinant(), 1.);
     }
 }

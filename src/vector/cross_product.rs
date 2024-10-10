@@ -4,8 +4,9 @@ use crate::vector::Vector;
 
 // &Vector<K, 3> ^ &Vector<K, 3>
 impl<K> BitXor<&Vector<K, 3>> for &Vector<K, 3>
-    where
-        K: Clone + for<'a> Mul<&'a K, Output=K> + Sub<K, Output=K> {
+where
+    K: Clone + for<'a> Mul<&'a K, Output = K> + Sub<K, Output = K>,
+{
     type Output = Vector<K, 3>;
 
     fn bitxor(self, other: &Vector<K, 3>) -> Self::Output {
@@ -19,45 +20,59 @@ impl<K> BitXor<&Vector<K, 3>> for &Vector<K, 3>
 
 // &Vector<K, 3> ^ Vector<K, 3>
 impl<K> BitXor<Vector<K, 3>> for &Vector<K, 3>
-    where
-        K: Clone + for<'a> Mul<&'a K, Output=K> + Sub<K, Output=K> {
+where
+    K: Clone + for<'a> Mul<&'a K, Output = K> + Sub<K, Output = K>,
+{
     type Output = Vector<K, 3>;
 
-    fn bitxor(self, other: Vector<K, 3>) -> Self::Output { self ^ &other }
+    fn bitxor(self, other: Vector<K, 3>) -> Self::Output {
+        self ^ &other
+    }
 }
 
 // Vector<K, 3> ^ &Vector<K, 3>
 impl<K> BitXor<&Vector<K, 3>> for Vector<K, 3>
-    where
-        K: Clone + for<'a> Mul<&'a K, Output=K> + Sub<K, Output=K> {
+where
+    K: Clone + for<'a> Mul<&'a K, Output = K> + Sub<K, Output = K>,
+{
     type Output = Self;
 
-    fn bitxor(self, other: &Self) -> Self::Output { &self ^ other }
+    fn bitxor(self, other: &Self) -> Self::Output {
+        &self ^ other
+    }
 }
 
 // Vector<K, 3> ^ Vector<K, 3>
 impl<K> BitXor<Vector<K, 3>> for Vector<K, 3>
-    where
-        K: Clone + for<'a> Mul<&'a K, Output=K> + Sub<K, Output=K> {
+where
+    K: Clone + for<'a> Mul<&'a K, Output = K> + Sub<K, Output = K>,
+{
     type Output = Self;
 
-    fn bitxor(self, other: Self) -> Self::Output { &self ^ &other }
+    fn bitxor(self, other: Self) -> Self::Output {
+        &self ^ &other
+    }
 }
 
 // Vector<K, 3> ^= &Vector<K, 3>
 impl<K> BitXorAssign<&Vector<K, 3>> for Vector<K, 3>
-    where
-        K: Clone + for<'a> Mul<&'a K, Output=K> + Sub<K, Output=K> {
-    fn bitxor_assign(&mut self, other: &Self) { *self = &*self ^ other }
+where
+    K: Clone + for<'a> Mul<&'a K, Output = K> + Sub<K, Output = K>,
+{
+    fn bitxor_assign(&mut self, other: &Self) {
+        *self = &*self ^ other
+    }
 }
 
 // Vector<K, 3> ^= Vector<K, 3>
 impl<K> BitXorAssign<Vector<K, 3>> for Vector<K, 3>
-    where
-        K: Clone + for<'a> Mul<&'a K, Output=K> + Sub<K, Output=K> {
-    fn bitxor_assign(&mut self, other: Self) { *self = &*self ^ &other }
+where
+    K: Clone + for<'a> Mul<&'a K, Output = K> + Sub<K, Output = K>,
+{
+    fn bitxor_assign(&mut self, other: Self) {
+        *self = &*self ^ &other
+    }
 }
-
 
 #[cfg(test)]
 mod test {

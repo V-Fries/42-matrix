@@ -1,21 +1,27 @@
-use std::ops::{Add, AddAssign, Div, Mul, Sub};
 use crate::sqrt::Sqrt;
 use crate::vector::Vector;
+use std::ops::{Add, AddAssign, Div, Mul, Sub};
 
 impl<K, const N: usize> Vector<K, N>
-    where
-        K: Default + Clone + for<'a> Mul<&'a K, Output=K> + AddAssign + Add<Output=K>
-        + Sqrt + Div<Output=K> + Sub<Output=K> {
+where
+    K: Default
+        + Clone
+        + for<'a> Mul<&'a K, Output = K>
+        + AddAssign
+        + Add<Output = K>
+        + Sqrt
+        + Div<Output = K>
+        + Sub<Output = K>,
+{
     pub fn angle_cos(&self, v2: &Self) -> K {
         self * v2 / (self.norm() * &v2.norm())
     }
 }
 
-
 #[cfg(test)]
 mod test {
-    use crate::approximately_equal::{assert_approximately_equal};
     use super::*;
+    use crate::approximately_equal::assert_approximately_equal;
 
     #[test]
     fn angle_cos() {

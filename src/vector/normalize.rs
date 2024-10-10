@@ -1,11 +1,16 @@
-use std::ops::{Add, DivAssign, Mul};
 use crate::sqrt::Sqrt;
 use crate::vector::Vector;
+use std::ops::{Add, DivAssign, Mul};
 
 impl<K, const N: usize> Vector<K, N>
-    where
-        K: Default + Clone + for<'a> Mul<&'a K, Output=K> + Add<Output=K> + Sqrt
-        + for<'a> DivAssign<&'a K> {
+where
+    K: Default
+        + Clone
+        + for<'a> Mul<&'a K, Output = K>
+        + Add<Output = K>
+        + Sqrt
+        + for<'a> DivAssign<&'a K>,
+{
     pub fn normalize(self) -> Self {
         let norm = self.norm();
         self / norm

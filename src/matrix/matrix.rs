@@ -1,9 +1,8 @@
 use std::array::IntoIter;
 use std::ops::{Index, IndexMut};
-use std::slice::{IterMut, Iter};
+use std::slice::{Iter, IterMut};
 
 use crate::one::One;
-
 
 type XIndex = usize;
 type YIndex = usize;
@@ -14,56 +13,70 @@ pub struct Matrix<K, const X: usize, const Y: usize> {
 }
 
 impl<K, const X: usize, const Y: usize> From<[[K; Y]; X]> for Matrix<K, X, Y> {
-    fn from(scalars: [[K; Y]; X]) -> Self { Matrix { scalars } }
+    fn from(scalars: [[K; Y]; X]) -> Self {
+        Matrix { scalars }
+    }
 }
 
 impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
     pub fn from_fn<F>(mut callback: F) -> Self
-        where
-            F: FnMut(XIndex, YIndex) -> K {
-        Self { 
-            scalars: std::array::from_fn(|x| std::array::from_fn(|y| callback(x, y)))
+    where
+        F: FnMut(XIndex, YIndex) -> K,
+    {
+        Self {
+            scalars: std::array::from_fn(|x| std::array::from_fn(|y| callback(x, y))),
         }
     }
 
     #[allow(dead_code)]
-    pub const fn is_square(&self) -> bool { X == Y }
+    pub const fn is_square(&self) -> bool {
+        X == Y
+    }
 
     #[allow(dead_code)]
-    pub const fn get_x_size(&self) -> usize { X }
+    pub const fn get_x_size(&self) -> usize {
+        X
+    }
 
     #[allow(dead_code)]
-    pub const fn get_y_size(&self) -> usize { Y }
+    pub const fn get_y_size(&self) -> usize {
+        Y
+    }
 
-    pub fn apply_op_to_row(&mut self, 
-                           x_start: usize,
-                           row_index: usize,
-                           mut op: impl FnMut(&mut K)) {
+    pub fn apply_op_to_row(
+        &mut self,
+        x_start: usize,
+        row_index: usize,
+        mut op: impl FnMut(&mut K),
+    ) {
         for x in x_start..X {
             op(&mut self[x][row_index]);
         }
     }
 }
 
-impl<K, const N: usize> Matrix<K, N, N> 
-    where 
-        K: One + Default {
+impl<K, const N: usize> Matrix<K, N, N>
+where
+    K: One + Default,
+{
     pub fn identity() -> Self {
         Self::from_fn(|x, y| if x == y { K::ONE } else { K::default() })
     }
 }
 
 impl<K, const X: usize, const Y: usize> Matrix<K, X, Y>
-    where
-        K: Clone {
+where
+    K: Clone,
+{
     pub fn from_row_major_order(scalars: [[K; X]; Y]) -> Self {
         Matrix::from(scalars).transpose()
     }
 }
 
-impl<K, const X: usize, const Y: usize> Default for Matrix<K, X, Y> 
-    where
-        K: Default {
+impl<K, const X: usize, const Y: usize> Default for Matrix<K, X, Y>
+where
+    K: Default,
+{
     fn default() -> Self {
         Self::from_fn(|_, _| K::default())
     }
@@ -72,11 +85,23 @@ impl<K, const X: usize, const Y: usize> Default for Matrix<K, X, Y>
 // iterators
 impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
     #[allow(dead_code)]
-    pub fn iter(&self) -> Iter<'_, [K; Y]> { self.scalars.iter() }
+    pub fn iter(&self) -> Iter<'_, [K; Y]> {
+        self.scalars.iter()
+    }
 
-    pub fn into_iter(self) -> IntoIter<[K; Y], X> { self.scalars.into_iter() }
+    pub fn iter_mut(&mut self) -> IterMut<'_, [K; Y]> {
+        self.scalars.iter_mut()
+    }
+}
 
-    pub fn iter_mut(&mut self) -> IterMut<'_, [K; Y]> { self.scalars.iter_mut() }
+impl<K, const X: usize, const Y: usize> IntoIterator for Matrix<K, X, Y> {
+    type Item = [K; Y];
+
+    type IntoIter = IntoIter<[K; Y], X>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.scalars.into_iter()
+    }
 }
 
 // []

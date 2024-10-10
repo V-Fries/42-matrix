@@ -2,9 +2,9 @@ use std::ops::{Add, Mul};
 
 use super::Matrix;
 
-impl<K, const M: usize, const N: usize, const P: usize> Mul<&Matrix<K, N, P>> for Matrix<K, M, N> 
+impl<K, const M: usize, const N: usize, const P: usize> Mul<&Matrix<K, N, P>> for Matrix<K, M, N>
 where
-    K: Default + for<'a> Mul<&'a K, Output=K> + Add<Output = K> + Clone
+    K: Default + for<'a> Mul<&'a K, Output = K> + Add<Output = K> + Clone,
 {
     type Output = Matrix<K, M, P>;
 
@@ -23,57 +23,20 @@ mod test {
 
     #[test]
     fn mul_matrix_times_matrix() {
-        let u = Matrix::from([
-            [1., 0.],
-            [0., 1.],
-        ]);
-        let v = Matrix::from([
-            [1., 0.],
-            [0., 1.],
-        ]);
-        assert_eq!(&(u * &v), &Matrix::from([
-            [1., 0.],
-            [0., 1.],
-        ]));
+        let u = Matrix::from([[1., 0.], [0., 1.]]);
+        let v = Matrix::from([[1., 0.], [0., 1.]]);
+        assert_eq!(&(u * &v), &Matrix::from([[1., 0.], [0., 1.],]));
 
-        let u = Matrix::from([
-            [1., 0.],
-            [0., 1.],
-        ]);
-        let v = Matrix::from([
-            [2., 1.],
-            [4., 2.],
-        ]);
-        assert_eq!(&(u * &v), &Matrix::from([
-            [2., 1.],
-            [4., 2.],
-        ]));
+        let u = Matrix::from([[1., 0.], [0., 1.]]);
+        let v = Matrix::from([[2., 1.], [4., 2.]]);
+        assert_eq!(&(u * &v), &Matrix::from([[2., 1.], [4., 2.],]));
 
-        let u = Matrix::from([
-            [3., -5.],
-            [6., 8.],
-        ]);
-        let v = Matrix::from([
-            [2., 1.],
-            [4., 2.],
-        ]);
-        assert_eq!(&(u * &v), &Matrix::from([
-            [-14., -7.],
-            [44., 22.],
-        ]));
+        let u = Matrix::from([[3., -5.], [6., 8.]]);
+        let v = Matrix::from([[2., 1.], [4., 2.]]);
+        assert_eq!(&(u * &v), &Matrix::from([[-14., -7.], [44., 22.],]));
 
-        let u = Matrix::from([
-            [1., -2., 1.],
-            [2., 1., 3.],
-        ]);
-        let v = Matrix::from([
-            [2., 1.],
-            [3., 2.],
-            [1., 1.],
-        ]);
-        assert_eq!(&(u * &v), &Matrix::from([
-            [-3., -2.],
-            [10., 7.],
-        ]));
+        let u = Matrix::from([[1., -2., 1.], [2., 1., 3.]]);
+        let v = Matrix::from([[2., 1.], [3., 2.], [1., 1.]]);
+        assert_eq!(&(u * &v), &Matrix::from([[-3., -2.], [10., 7.],]));
     }
 }

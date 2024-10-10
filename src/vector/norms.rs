@@ -1,11 +1,12 @@
-use std::ops::{Mul, Add};
 use crate::abs::Abs;
 use crate::sqrt::Sqrt;
 use crate::vector::Vector;
+use std::ops::{Add, Mul};
 
 impl<K, const N: usize> Vector<K, N>
-    where
-        K: Default + Clone + Add<Output=K> + Abs {
+where
+    K: Default + Clone + Add<Output = K> + Abs,
+{
     #[allow(dead_code)]
     pub fn norm_1(&self) -> K {
         self.iter()
@@ -14,8 +15,9 @@ impl<K, const N: usize> Vector<K, N>
 }
 
 impl<K, const N: usize> Vector<K, N>
-    where
-        K: Default + Clone + for<'a> Mul<&'a K, Output=K> + Add<Output=K> + Sqrt {
+where
+    K: Default + Clone + for<'a> Mul<&'a K, Output = K> + Add<Output = K> + Sqrt,
+{
     #[allow(dead_code)]
     pub fn norm(&self) -> K {
         self.iter()
@@ -25,26 +27,26 @@ impl<K, const N: usize> Vector<K, N>
 }
 
 impl<K, const N: usize> Vector<K, N>
-    where
-        K: Default + Clone + Abs + PartialOrd {
+where
+    K: Default + Clone + Abs + PartialOrd,
+{
     #[allow(dead_code)]
     pub fn norm_inf(&self) -> K {
-        self.iter()
-            .fold(Default::default(), |result, elem| {
-                // Could use K::max() if I ever implement a Max trait
-                let elem_abs = elem.clone().abs();
-                if elem_abs > result {
-                    return elem_abs;
-                }
-                result
-            })
+        self.iter().fold(Default::default(), |result, elem| {
+            // Could use K::max() if I ever implement a Max trait
+            let elem_abs = elem.clone().abs();
+            if elem_abs > result {
+                return elem_abs;
+            }
+            result
+        })
     }
 }
 
 #[cfg(test)]
 mod test {
-    use crate::approximately_equal::assert_approximately_equal;
     use super::*;
+    use crate::approximately_equal::assert_approximately_equal;
 
     #[test]
     fn norms() {

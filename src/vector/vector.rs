@@ -8,27 +8,36 @@ pub struct Vector<K, const N: usize> {
 }
 
 impl<K, const N: usize> From<[K; N]> for Vector<K, N> {
-    fn from(scalars: [K; N]) -> Self { Self { scalars } }
+    fn from(scalars: [K; N]) -> Self {
+        Self { scalars }
+    }
 }
 
 impl<K, const N: usize> Vector<K, N> {
     pub fn from_fn<F>(callback: F) -> Self
-        where
-            F: FnMut(usize) -> K {
-        Self { scalars: std::array::from_fn(callback) }
+    where
+        F: FnMut(usize) -> K,
+    {
+        Self {
+            scalars: std::array::from_fn(callback),
+        }
     }
 }
 
 impl<K, const N: usize> Default for Vector<K, N>
-    where
-        K: Default {
+where
+    K: Default,
+{
     #[allow(dead_code)]
-    fn default() -> Self { Self::from(std::array::from_fn(|_| Default::default())) }
+    fn default() -> Self {
+        Self::from(std::array::from_fn(|_| Default::default()))
+    }
 }
 
 impl<K, const N: usize> Vector<K, N>
-    where
-        K: Default + Clone + for<'a> MulAssign<&'a K> + for<'a> AddAssign<&'a K> {
+where
+    K: Default + Clone + for<'a> MulAssign<&'a K> + for<'a> AddAssign<&'a K>,
+{
     #[allow(dead_code)]
     pub fn linear_combination<const NB_OF_VECTORS: usize>(
         vectors: [Vector<K, N>; NB_OF_VECTORS],
@@ -43,35 +52,50 @@ impl<K, const N: usize> Vector<K, N>
     }
 }
 
-
 // Utils
 impl<K, const N: usize> Vector<K, N> {
     #[allow(dead_code)]
-    pub fn size(&self) -> usize { N }
+    pub fn size(&self) -> usize {
+        N
+    }
 }
 
 // iterators
 impl<K, const N: usize> Vector<K, N> {
     #[allow(dead_code)]
-    pub fn iter(&self) -> Iter<'_, K> { self.scalars.iter() }
+    pub fn iter(&self) -> Iter<'_, K> {
+        self.scalars.iter()
+    }
 
-    pub fn into_iter(self) -> IntoIter<K, N> { self.scalars.into_iter() }
-
-    pub fn iter_mut(&mut self) -> IterMut<'_, K> { self.scalars.iter_mut() }
+    pub fn iter_mut(&mut self) -> IterMut<'_, K> {
+        self.scalars.iter_mut()
+    }
 }
 
+impl<K, const N: usize> IntoIterator for Vector<K, N> {
+    type Item = K;
+
+    type IntoIter = IntoIter<K, N>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.scalars.into_iter()
+    }
+}
 
 // []
 impl<K, const N: usize> Index<usize> for Vector<K, N> {
     type Output = K;
 
-    fn index(&self, index: usize) -> &Self::Output { &self.scalars[index] }
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.scalars[index]
+    }
 }
 
 impl<K, const N: usize> IndexMut<usize> for Vector<K, N> {
-    fn index_mut(&mut self, index: usize) -> &mut Self::Output { &mut self.scalars[index] }
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.scalars[index]
+    }
 }
-
 
 #[cfg(test)]
 mod test {

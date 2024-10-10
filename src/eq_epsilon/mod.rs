@@ -1,3 +1,4 @@
+#[allow(clippy::module_inception)]
 mod eq_epsilon;
 mod f32;
 mod f64;

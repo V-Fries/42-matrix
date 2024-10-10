@@ -5,10 +5,15 @@ use crate::approximately_equal::ApproximatelyEqual;
 use super::Matrix;
 
 impl<K, const X: usize, const Y: usize> Matrix<K, X, Y>
-    where
-        K: Clone + ApproximatelyEqual + Default + for<'a> DivAssign<&'a K>
-            + for<'a> Mul<&'a K, Output = K> + SubAssign + AddAssign 
-            + for<'a> Div<&'a K, Output = K>
+where
+    K: Clone
+        + ApproximatelyEqual
+        + Default
+        + for<'a> DivAssign<&'a K>
+        + for<'a> Mul<&'a K, Output = K>
+        + SubAssign
+        + AddAssign
+        + for<'a> Div<&'a K, Output = K>,
 {
     pub fn row_echelon_form<const SHOULD_LEAD_WITH_ONES: bool>(self) -> Self {
         self._row_echelon_form::<SHOULD_LEAD_WITH_ONES>(&mut None)
@@ -22,9 +27,9 @@ impl<K, const X: usize, const Y: usize> Matrix<K, X, Y>
         let mut start_y = 0;
 
         while start_x < X && start_y < Y {
-            let Some(first_non_zero) = self.get_first_non_zero::<SHOULD_LEAD_WITH_ONES>(
-                start_x, start_y, inverse
-            ) else {
+            let Some(first_non_zero) =
+                self.get_first_non_zero::<SHOULD_LEAD_WITH_ONES>(start_x, start_y, inverse)
+            else {
                 start_x += 1;
                 continue;
             };
@@ -56,18 +61,18 @@ impl<K, const X: usize, const Y: usize> Matrix<K, X, Y>
             let tmp = self[x][start_y].clone() * scale;
             self[x][y] -= tmp;
         }
-
     }
 
-    fn get_first_non_zero<const SHOULD_LEAD_WITH_ONES: bool>(&mut self,
-                                                             x: usize,
-                                                             y: usize,
-                                                             inverse: &mut Option<&mut Self>)
-                                                             -> Option<K> {
+    fn get_first_non_zero<const SHOULD_LEAD_WITH_ONES: bool>(
+        &mut self,
+        x: usize,
+        y: usize,
+        inverse: &mut Option<&mut Self>,
+    ) -> Option<K> {
         let first_non_zero_y = self.first_non_zero_y_index(x, y)?;
         let first_non_zero = self[x][first_non_zero_y].clone();
 
-        if first_non_zero_y != y { 
+        if first_non_zero_y != y {
             for x in x..X {
                 let tmp = if SHOULD_LEAD_WITH_ONES {
                     self[x][first_non_zero_y].clone() / &first_non_zero
@@ -89,7 +94,9 @@ impl<K, const X: usize, const Y: usize> Matrix<K, X, Y>
         } else if SHOULD_LEAD_WITH_ONES {
             let op = |elem: &mut K| *elem /= &first_non_zero;
             self.apply_op_to_row(x, y, op);
-            if let Some(inverse) = inverse { inverse.apply_op_to_row(0, y, op) };
+            if let Some(inverse) = inverse {
+                inverse.apply_op_to_row(0, y, op)
+            };
         }
         Some(first_non_zero)
     }
@@ -98,4 +105,3 @@ impl<K, const X: usize, const Y: usize> Matrix<K, X, Y>
         (y_start..Y).find(|y| !self[x][*y].clone().approximately_equal(&K::default()))
     }
 }
-
