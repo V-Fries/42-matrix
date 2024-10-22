@@ -12,6 +12,7 @@ mod reduced_row_echelon_form;
 mod row_echelon_form;
 mod sub;
 mod trace;
+mod translation;
 mod transpose;
 
 pub use matrix::Matrix;
