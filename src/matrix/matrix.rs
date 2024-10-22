@@ -64,10 +64,7 @@ where
     }
 }
 
-impl<K, const X: usize, const Y: usize> Matrix<K, X, Y>
-where
-    K: Clone,
-{
+impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
     pub fn from_row_major_order(scalars: [[K; X]; Y]) -> Self {
         Matrix::from(scalars).transpose()
     }

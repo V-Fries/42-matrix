@@ -1,11 +1,13 @@
+use std::mem::ManuallyDrop;
+
 use super::Matrix;
 
-impl<K, const M: usize, const N: usize> Matrix<K, M, N>
-where
-    K: Clone,
-{
-    pub fn transpose(&self) -> Matrix<K, N, M> {
-        Matrix::from_fn(|x, y| self[y][x].clone())
+impl<K, const M: usize, const N: usize> Matrix<K, M, N> {
+    pub fn transpose(self) -> Matrix<K, N, M> {
+        // Prevents automatic dropping to avoid double free since we use unsafe ptr::read below
+        let scalars = ManuallyDrop::new(self);
+
+        Matrix::from_fn(|x, y| unsafe { std::ptr::read(&scalars[y][x]) })
     }
 }
 
