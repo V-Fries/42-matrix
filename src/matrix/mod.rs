@@ -2,6 +2,7 @@ mod add;
 mod comparison;
 mod determinant;
 mod inverse;
+mod look_at;
 #[allow(clippy::module_inception)]
 mod matrix;
 mod matrix_slice;
