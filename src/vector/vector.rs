@@ -22,6 +22,10 @@ impl<K, const N: usize> Vector<K, N> {
             scalars: std::array::from_fn(callback),
         }
     }
+
+    pub fn into_array(self) -> [K; N] {
+        self.scalars
+    }
 }
 
 impl<K, const N: usize> Default for Vector<K, N>
