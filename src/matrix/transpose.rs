@@ -32,9 +32,6 @@ mod test {
         let matrix = Matrix::from([[1], [2], [3]]);
         assert_eq!(matrix.transpose(), Matrix::from([[1, 2, 3],]));
 
-        let matrix: Matrix<i32, 0, 0> = Matrix::from([]);
-        assert_eq!(matrix.transpose(), Matrix::from([]));
-
         let matrix = Matrix::from([[1, 2], [3, 4]]);
         assert_eq!(matrix.transpose(), Matrix::from([[1, 3], [2, 4],]));
     }

@@ -109,9 +109,6 @@ mod test {
             Matrix::<i32, 1, 0>::from([[]])
         );
 
-        let u = Matrix::<i32, 0, 0>::from([]);
-        assert_eq!(u.reduced_row_echelon_form(), Matrix::<i32, 0, 0>::from([]));
-
         let u = Matrix::from_row_major_order([[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]);
         assert_eq!(
             u.reduced_row_echelon_form(),

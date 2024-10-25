@@ -3,18 +3,27 @@ use std::ops::{Index, IndexMut};
 use std::slice::{Iter, IterMut};
 
 use crate::one::One;
+use crate::Vector;
 
 type XIndex = usize;
 type YIndex = usize;
 
 #[derive(Debug, Clone)]
 pub struct Matrix<K, const X: usize, const Y: usize> {
-    pub(in crate::matrix) scalars: [[K; Y]; X],
+    pub(in crate::matrix) scalars: [Vector<K, Y>; X],
 }
 
 impl<K, const X: usize, const Y: usize> From<[[K; Y]; X]> for Matrix<K, X, Y> {
     fn from(scalars: [[K; Y]; X]) -> Self {
-        Matrix { scalars }
+        Self {
+            scalars: scalars.map(|elem| elem.into()),
+        }
+    }
+}
+
+impl<K, const X: usize, const Y: usize> From<[Vector<K, Y>; X]> for Matrix<K, X, Y> {
+    fn from(scalars: [Vector<K, Y>; X]) -> Self {
+        Self { scalars }
     }
 }
 
@@ -24,7 +33,7 @@ impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
         F: FnMut(XIndex, YIndex) -> K,
     {
         Self {
-            scalars: std::array::from_fn(|x| std::array::from_fn(|y| callback(x, y))),
+            scalars: std::array::from_fn(|x| Vector::from_fn(|y| callback(x, y))),
         }
     }
 
@@ -82,19 +91,19 @@ where
 // iterators
 impl<K, const X: usize, const Y: usize> Matrix<K, X, Y> {
     #[allow(dead_code)]
-    pub fn iter(&self) -> Iter<'_, [K; Y]> {
+    pub fn iter(&self) -> Iter<'_, Vector<K, Y>> {
         self.scalars.iter()
     }
 
-    pub fn iter_mut(&mut self) -> IterMut<'_, [K; Y]> {
+    pub fn iter_mut(&mut self) -> IterMut<'_, Vector<K, Y>> {
         self.scalars.iter_mut()
     }
 }
 
 impl<K, const X: usize, const Y: usize> IntoIterator for Matrix<K, X, Y> {
-    type Item = [K; Y];
+    type Item = Vector<K, Y>;
 
-    type IntoIter = IntoIter<[K; Y], X>;
+    type IntoIter = IntoIter<Vector<K, Y>, X>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.scalars.into_iter()
@@ -103,7 +112,7 @@ impl<K, const X: usize, const Y: usize> IntoIterator for Matrix<K, X, Y> {
 
 // []
 impl<K, const X: usize, const Y: usize> Index<usize> for Matrix<K, X, Y> {
-    type Output = [K; Y];
+    type Output = Vector<K, Y>;
 
     fn index(&self, x: usize) -> &Self::Output {
         &self.scalars[x]
@@ -122,8 +131,8 @@ mod tests {
 
     #[test]
     fn new() {
-        let scalars = [[1, 2], [3, 4]];
-        let matrix = Matrix::from(scalars);
+        let scalars = [Vector::from([1, 2]), Vector::from([3, 4])];
+        let matrix = Matrix::from(scalars.clone());
         assert_eq!(matrix.scalars, scalars);
     }
 

@@ -10,6 +10,7 @@ mod mul;
 mod mul_matrix;
 mod mul_vector;
 mod reduced_row_echelon_form;
+mod rotation;
 mod row_echelon_form;
 mod sub;
 mod trace;
