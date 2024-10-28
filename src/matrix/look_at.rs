@@ -18,9 +18,14 @@ where
         + AddAssign
         + Neg<Output = K>,
 {
-    pub fn look_at(camera_pos: Vector<K, 3>, target_point: Vector<K, 3>, up: Vector<K, 3>) -> Self {
-        let forward = (target_point - &camera_pos).normalize();
-        let right = (&forward ^ &up).normalize();
+    pub fn look_at(
+        camera_pos: impl Into<Vector<K, 3>>,
+        target_point: impl Into<Vector<K, 3>>,
+        up: impl Into<Vector<K, 3>>,
+    ) -> Self {
+        let camera_pos = camera_pos.into();
+        let forward = (target_point.into() - &camera_pos).normalize();
+        let right = (&forward ^ up.into()).normalize();
         let up = &right ^ &forward;
 
         Matrix::from_row_major_order([
@@ -53,11 +58,7 @@ mod test {
 
     #[test]
     fn look_at() {
-        let m = Matrix::look_at(
-            [2., 2., 2.].into(),
-            [0., 0., 0.].into(),
-            [0., 0., 1.].into(),
-        );
+        let m = Matrix::look_at([2., 2., 2.], [0., 0., 0.], [0., 0., 1.]);
         assert_eq!(
             m,
             [

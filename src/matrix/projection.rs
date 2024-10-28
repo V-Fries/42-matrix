@@ -21,7 +21,14 @@ where
         + Sub<Output = K>
         + PartialOrd,
 {
-    pub fn perspective_opengl(vertical_fov: Radian<K>, aspect_ratio: K, near: K, far: K) -> Self {
+    pub fn perspective_opengl(
+        vertical_fov: impl Into<Radian<K>>,
+        aspect_ratio: K,
+        near: K,
+        far: K,
+    ) -> Self {
+        let vertical_fov = vertical_fov.into();
+
         debug_assert!(near < far);
         debug_assert!(aspect_ratio.clone().abs() > K::default());
         debug_assert!(Radian::into_inner(Radian::clone(&vertical_fov)).abs() > K::default());
@@ -60,7 +67,7 @@ mod test {
     #[test]
     fn perspective_opengl() {
         let m = Matrix::perspective_opengl(
-            Degree::from(45.0f32).into(),
+            Degree::from(45.0f32),
             1920.0f32 / 1080.0f32,
             0.1f32,
             10.0f32,
