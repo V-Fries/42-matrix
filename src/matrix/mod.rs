@@ -9,6 +9,7 @@ mod matrix_slice;
 mod mul;
 mod mul_matrix;
 mod mul_vector;
+mod projection;
 mod reduced_row_echelon_form;
 mod rotation;
 mod row_echelon_form;

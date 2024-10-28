@@ -1,6 +1,8 @@
 use std::ops::{Deref, DerefMut};
 
+#[derive(Clone)]
 pub struct Radian<K>(K);
+#[derive(Clone)]
 pub struct Degree<K>(K);
 
 macro_rules! define_base_methods {
@@ -20,7 +22,7 @@ macro_rules! define_base_methods {
         }
 
         impl<K> $t<K> {
-            fn into_inner(self) -> K {
+            pub fn into_inner(self) -> K {
                 self.0
             }
         }

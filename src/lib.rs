@@ -8,6 +8,7 @@ mod matrix;
 mod one;
 mod sin;
 mod sqrt;
+mod tan;
 mod vector;
 
 pub use matrix::{Matrix, MatrixSlice};
@@ -23,3 +24,4 @@ pub use eq_epsilon::EqEpsilon;
 pub use one::One;
 pub use sin::Sin;
 pub use sqrt::Sqrt;
+pub use tan::Tan;
