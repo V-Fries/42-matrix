@@ -13,6 +13,7 @@ mod projection;
 mod reduced_row_echelon_form;
 mod rotation;
 mod row_echelon_form;
+mod scale;
 mod sub;
 mod trace;
 mod translation;
