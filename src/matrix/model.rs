@@ -22,14 +22,15 @@ where
         + for<'a> AddAssign<&'a K>,
 {
     pub fn model(
-        rotation_axis: Vector<K, 3>,
-        angle: Radian<K>,
-        position: Vector<K, 3>,
-        scale: Vector<K, 3>,
+        rotation_axis: impl Into<Vector<K, 3>>,
+        angle: impl Into<Radian<K>>,
+        position: impl Into<Vector<K, 3>>,
+        scale: impl Into<Vector<K, 3>>,
     ) -> Self {
-        let axis = rotation_axis.normalize();
-        let sin = angle.sin();
-        let cos = angle.cos();
+        let axis = rotation_axis.into().normalize();
+        let angle_rad = angle.into();
+        let sin = angle_rad.sin();
+        let cos = angle_rad.cos();
         let axis_correction = axis.clone() * (K::ONE - &cos);
 
         let rot_a = axis_correction[0].clone() * &axis[0] + &cos;
@@ -42,7 +43,8 @@ where
         let rot_h = axis_correction[2].clone() * &axis[1] - sin * &axis[0];
         let rot_i = axis_correction[2].clone() * &axis[2] + cos;
 
-        let [pos_x, pos_y, pos_z] = position.into_array();
+        let scale = scale.into();
+        let [pos_x, pos_y, pos_z] = position.into().into();
 
         Self::from([
             [
@@ -76,18 +78,13 @@ mod test {
 
     #[test]
     fn model() {
-        let rot_axis = Vector::from([0.33f32, 0., 0.67]);
-        let rot_rad = Radian::from(Degree::from(67.0f32));
-        let pos = Vector::from([24.0f32, 42., 89.]);
-        let scale = Vector::from([45.0f32, 56., 4.]);
+        let rot_axis = [0.33f32, 0., 0.67];
+        let rot_rad = Degree::from(67.0f32);
+        let pos = [24.0f32, 42., 89.];
+        let scale = [45.0f32, 56., 4.];
 
         assert_eq!(
-            Matrix::model(
-                rot_axis.clone(),
-                rot_rad.clone(),
-                pos.clone(),
-                scale.clone()
-            ),
+            Matrix::model(rot_axis, rot_rad.clone(), pos, scale),
             Matrix::translation(pos[0], pos[1], pos[2])
                 * Matrix::rotate(&Matrix::identity(), rot_axis, rot_rad)
                 * Matrix::scale(scale[0], scale[1], scale[2])

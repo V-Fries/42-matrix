@@ -23,10 +23,15 @@ where
         + for<'a> Mul<&'a K, Output = K>
         + for<'a> AddAssign<&'a K>,
 {
-    pub fn rotate(m: &Matrix<K, 4, 4>, axis: Vector<K, 3>, angle: Radian<K>) -> Self {
-        let axis = axis.normalize();
-        let sin = angle.sin();
-        let cos = angle.cos();
+    pub fn rotate(
+        m: &Matrix<K, 4, 4>,
+        axis: impl Into<Vector<K, 3>>,
+        angle: impl Into<Radian<K>>,
+    ) -> Self {
+        let axis = axis.into().normalize();
+        let angle_rad = angle.into();
+        let sin = angle_rad.sin();
+        let cos = angle_rad.cos();
         let axis_correction = axis.clone() * (K::ONE - &cos);
 
         Self::from([
@@ -108,7 +113,7 @@ mod test {
         let mut r = Matrix::rotate(
             &Matrix::identity(),
             Vector::from([0.33, 0., 0.67]),
-            Degree::from(67.0f32).into(),
+            Degree::from(67.0f32),
         );
         assert_eq!(
             r,
@@ -123,7 +128,7 @@ mod test {
         r[3][3] = 45.0f32;
         r[3][2] = 489.0f32;
         r[1][3] = 5.0f32;
-        let r = Matrix::rotate(&r, [0.45, 23., 55.].into(), Degree::from(54.0f32).into());
+        let r = Matrix::rotate(&r, [0.45, 23., 55.], Degree::from(54.0f32));
         assert_eq!(
             r,
             Matrix::from_row_major_order([
