@@ -6,6 +6,7 @@ mod look_at;
 #[allow(clippy::module_inception)]
 mod matrix;
 mod matrix_slice;
+mod model;
 mod mul;
 mod mul_matrix;
 mod mul_vector;
