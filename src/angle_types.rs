@@ -1,9 +1,53 @@
-use std::ops::{Deref, DerefMut};
+use std::ops::{Deref, DerefMut, Add, AddAssign, Sub, SubAssign, Mul, MulAssign, Div, DivAssign};
 
 #[derive(Clone)]
 pub struct Radian<K>(K);
 #[derive(Clone)]
 pub struct Degree<K>(K);
+
+macro_rules! define_op {
+    ($t:ident, $op:ident, $op_fn:ident, $op_assign:ident, $op_assign_fn:ident) => {
+        impl<K> $op<$t<K>> for $t<K>
+        where
+            K: $op<Output = K>
+        {
+            type Output = Self;
+
+            fn $op_fn(self, other: Self) -> Self {
+                Self($t::into_inner(self).$op_fn($t::into_inner(other)))
+            }
+        }
+
+        impl<K> $op<&$t<K>> for $t<K>
+        where
+            K: for<'a> $op<&'a K, Output = K>
+        {
+            type Output = Self;
+
+            fn $op_fn(self, other: &Self) -> Self {
+                Self($t::into_inner(self).$op_fn(&*other))
+            }
+        }
+
+        impl<K> $op_assign<$t<K>> for $t<K>
+        where
+            K: $op_assign<K>
+        {
+            fn $op_assign_fn(&mut self, other: Self) {
+                self.deref_mut().$op_assign_fn($t::into_inner(other));
+            }
+        }
+
+        impl<K> $op_assign<&$t<K>> for $t<K>
+        where
+            K: for<'a> $op_assign<&'a K>
+        {
+            fn $op_assign_fn(&mut self, other: &Self) {
+                self.deref_mut().$op_assign_fn(&*other);
+            }
+        }
+    };
+}
 
 macro_rules! define_base_methods {
     ($t:ident) => {
@@ -12,6 +56,11 @@ macro_rules! define_base_methods {
                 Self(inner)
             }
         }
+
+        define_op!($t, Add, add, AddAssign, add_assign);
+        define_op!($t, Sub, sub, SubAssign, sub_assign);
+        define_op!($t, Mul, mul, MulAssign, mul_assign);
+        define_op!($t, Div, div, DivAssign, div_assign);
 
         impl<K> Deref for $t<K> {
             type Target = K;
@@ -34,6 +83,7 @@ macro_rules! define_base_methods {
         }
     };
 }
+
 define_base_methods!(Radian);
 define_base_methods!(Degree);
 
