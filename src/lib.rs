@@ -13,6 +13,9 @@ mod vector;
 
 pub use matrix::{Matrix, MatrixSlice};
 pub use vector::Vector;
+pub type Vec2<K> = Vector<K, 2>;
+pub type Vec3<K> = Vector<K, 3>;
+pub type Vec4<K> = Vector<K, 4>;
 
 pub use lerp::lerp;
 
