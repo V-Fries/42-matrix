@@ -7,6 +7,12 @@ pub struct Degree<K>(K);
 
 macro_rules! define_base_methods {
     ($t:ident) => {
+        impl<K> $t<K> {
+            pub fn new(inner: K) -> Self {
+                Self(inner)
+            }
+        }
+
         impl<K> Deref for $t<K> {
             type Target = K;
 
@@ -32,7 +38,7 @@ define_base_methods!(Radian);
 define_base_methods!(Degree);
 
 macro_rules! define_angle_type {
-    ($t:ty, $self_type:ident, $other_type:ident) => {
+    ($t:ty, $self_type:ident) => {
         impl From<$t> for $self_type<$t> {
             fn from(value: $t) -> Self {
                 Self(value)
@@ -43,14 +49,14 @@ macro_rules! define_angle_type {
 
 macro_rules! define_angle_types_for {
     ($t:ty, $pi:expr, $degree_180:expr) => {
-        define_angle_type!($t, Radian, Degree);
+        define_angle_type!($t, Radian);
         impl From<Degree<$t>> for Radian<$t> {
             fn from(degree: Degree<$t>) -> Self {
                 Self(Degree::<$t>::into_inner(degree) * $pi / $degree_180)
             }
         }
 
-        define_angle_type!($t, Degree, Radian);
+        define_angle_type!($t, Degree);
         impl From<Radian<$t>> for Degree<$t> {
             fn from(radian: Radian<$t>) -> Self {
                 Self(Radian::<$t>::into_inner(radian) * $degree_180 / $pi)
