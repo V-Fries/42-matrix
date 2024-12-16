@@ -1,4 +1,4 @@
-use std::ops::{Deref, DerefMut, Add, AddAssign, Sub, SubAssign, Mul, MulAssign, Div, DivAssign};
+use std::ops::{Add, AddAssign, Deref, DerefMut, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 
 #[derive(Clone)]
 pub struct Radian<K>(K);
@@ -9,7 +9,7 @@ macro_rules! define_op {
     ($t:ident, $op:ident, $op_fn:ident, $op_assign:ident, $op_assign_fn:ident) => {
         impl<K> $op<$t<K>> for $t<K>
         where
-            K: $op<Output = K>
+            K: $op<Output = K>,
         {
             type Output = Self;
 
@@ -20,7 +20,7 @@ macro_rules! define_op {
 
         impl<K> $op<&$t<K>> for $t<K>
         where
-            K: for<'a> $op<&'a K, Output = K>
+            K: for<'a> $op<&'a K, Output = K>,
         {
             type Output = Self;
 
@@ -31,7 +31,7 @@ macro_rules! define_op {
 
         impl<K> $op_assign<$t<K>> for $t<K>
         where
-            K: $op_assign<K>
+            K: $op_assign<K>,
         {
             fn $op_assign_fn(&mut self, other: Self) {
                 self.deref_mut().$op_assign_fn($t::into_inner(other));
@@ -40,7 +40,7 @@ macro_rules! define_op {
 
         impl<K> $op_assign<&$t<K>> for $t<K>
         where
-            K: for<'a> $op_assign<&'a K>
+            K: for<'a> $op_assign<&'a K>,
         {
             fn $op_assign_fn(&mut self, other: &Self) {
                 self.deref_mut().$op_assign_fn(&*other);
