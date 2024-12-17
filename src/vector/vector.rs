@@ -66,6 +66,17 @@ impl<K, const N: usize> Vector<K, N> {
     }
 }
 
+impl<K, const N: usize> Vector<K, N>
+where
+    K: Clone,
+{
+    #[allow(dead_code)]
+    pub fn take<const M: usize>(&self) -> Vector<K, M> {
+        assert!(M <= N);
+        Vector::<K, M>::from_fn(|i| self[i].clone())
+    }
+}
+
 // iterators
 impl<K, const N: usize> Vector<K, N> {
     #[allow(dead_code)]
