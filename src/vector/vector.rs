@@ -72,6 +72,11 @@ impl<K, const N: usize> Vector<K, N> {
     {
         self.scalars.map(f).into()
     }
+
+    #[allow(dead_code)]
+    pub fn into_scalars(self) -> [K; N] {
+        self.scalars
+    }
 }
 
 impl<K, const N: usize> Vector<K, N>
