@@ -64,6 +64,14 @@ impl<K, const N: usize> Vector<K, N> {
     pub fn size(&self) -> usize {
         N
     }
+
+    #[allow(dead_code)]
+    pub fn map<F, U>(self, f: F) -> Vector<U, N>
+    where
+        F: FnMut(K) -> U,
+    {
+        self.scalars.map(f).into()
+    }
 }
 
 impl<K, const N: usize> Vector<K, N>
